@@ -1,0 +1,8 @@
+# Dependencies
+/lorry_modules/
+
+# Config overrides
+/lorry-info-*.yaml
+
+# Root luau config file
+/.luaurc

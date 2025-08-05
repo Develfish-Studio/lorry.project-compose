@@ -1,0 +1,47 @@
+name: develfish-repo.project-compose
+actions:
+  test:
+    path: actions/test
+luau:
+  aliases:
+    root: .
+  globals:
+    - tonumber
+scrolls:
+  app:
+    path: scrolls/app
+  make:
+    path: scrolls/make
+  spa:
+    path: scrolls/spa
+  compose:
+    path: scrolls/compose
+  haproxy:
+    path: scrolls/haproxy
+  postgres:
+    path: scrolls/postgres
+  kafka:
+    path: scrolls/kafka
+  kafka-ui:
+    path: scrolls/kafka-ui
+  kcadm:
+    path: scrolls/kcadm
+  keycloak:
+    path: scrolls/keycloak
+  pgadmin:
+    path: scrolls/pgadmin
+  swagger-ui:
+    path: scrolls/swagger-ui
+  minio:
+    path: scrolls/minio
+  mcli:
+    path: scrolls/mcli
+  worker:
+    path: scrolls/worker
+dependencies:
+  develfish-repo.utils:
+    uri: git@github.com:Develfish-Studio/develfish-repo.utils.git
+  develfish-repo.testing:
+    uri: git@github.com:Develfish-Studio/develfish-repo.testing.git
+  develfish-repo.project:
+    uri: git@github.com:Develfish-Studio/develfish-repo.project.git
