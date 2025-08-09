@@ -27,3 +27,15 @@ Lorry:generate "@develfish-repo.project-compose/kafka" {
     :unwrap()
 }
 ```
+
+## Generate Minio Container
+
+```lua snippet Lorry:generate "@develfish-repo.project-compose/minio"
+Lorry:generate "@develfish-repo.project-compose/minio" {
+  target = '@',
+  variables = Minio
+    :from(project)
+    :with_link('env-haproxy:minio.local.example.com')
+    :unwrap()
+}
+```
