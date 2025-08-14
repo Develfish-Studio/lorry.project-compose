@@ -3,9 +3,9 @@
 local Meta = require('@develfish-repo.utils/lib/Meta')
 local Wrapper = require('@develfish-repo.project/lib/Wrapper')
 local Project = require('@develfish-repo.project/lib/Project')
-local Route = require('@root/lib/haproxy/Route')
-local Proxy = require('@root/lib/haproxy/Proxy')
-local Server = require('@root/lib/haproxy/Server')
+local Route = require('./Haproxy/Route')
+local Proxy = require('./Haproxy/Proxy')
+local Server = require('./Haproxy/Server')
 local Manifest = require('./Manifest')
 
 local Haproxy = {

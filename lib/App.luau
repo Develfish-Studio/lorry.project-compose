@@ -3,8 +3,8 @@
 local Meta = require('@develfish-repo.utils/lib/Meta')
 local Project = require('@develfish-repo.project/lib/Project')
 local Manifest = require('./Manifest')
-local ComposeVolume = require('./compose/Volume')
-local ComposeNetwork = require('./compose/Network')
+local ComposeVolume = require('./Compose/Volume')
+local ComposeNetwork = require('./Compose/Network')
 
 local App = {}
 

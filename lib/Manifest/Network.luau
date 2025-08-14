@@ -1,7 +1,7 @@
 --!strict
 
 local Meta = require('@develfish-repo.utils/lib/Meta')
-local ComposeNetwork = require('../compose/Network')
+local ComposeNetwork = require('../Compose/Network')
 
 local Network = {}
 

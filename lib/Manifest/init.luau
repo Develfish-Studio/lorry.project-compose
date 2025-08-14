@@ -1,11 +1,11 @@
 --!strict
 
 local Meta = require('@develfish-repo.utils/lib/Meta')
-local Link = require('./manifest/Link')
-local DependsOn = require('./manifest/DependsOn')
-local EnvVariable = require('./manifest/EnvVariable')
-local Volume = require('./manifest/Volume')
-local Network = require('./manifest/Network')
+local Link = require('./Manifest/Link')
+local DependsOn = require('./Manifest/DependsOn')
+local EnvVariable = require('./Manifest/EnvVariable')
+local Volume = require('./Manifest/Volume')
+local Network = require('./Manifest/Network')
 
 local Manifest = {
   Link = Link,

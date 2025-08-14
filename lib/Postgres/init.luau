@@ -4,9 +4,9 @@ local Meta = require('@develfish-repo.utils/lib/Meta')
 local Project = require('@develfish-repo.project/lib/Project')
 local Wrapper = require('@develfish-repo.project/lib/Wrapper')
 local Manifest = require('./Manifest')
-local Database = require('./postgres/Database')
-local ComposeVolume = require('./compose/Volume')
-local ComposeNetwork = require('./compose/Network')
+local Database = require('./Postgres/Database')
+local ComposeVolume = require('./Compose/Volume')
+local ComposeNetwork = require('./Compose/Network')
 
 local Postgres = {}
 

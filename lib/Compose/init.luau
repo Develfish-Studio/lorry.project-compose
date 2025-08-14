@@ -3,9 +3,9 @@
 local Meta = require('@develfish-repo.utils/lib/Meta')
 local Wrapper = require('@develfish-repo.project/lib/Wrapper')
 local Project = require('@develfish-repo.project/lib/Project')
-local Include = require('./compose/Include')
-local Network = require('./compose/Network')
-local Volume = require('./compose/Volume')
+local Include = require('./Compose/Include')
+local Network = require('./Compose/Network')
+local Volume = require('./Compose/Volume')
 
 local Compose = {
   Include = Include,

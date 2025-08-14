@@ -4,9 +4,9 @@ local Meta = require('@develfish-repo.utils/lib/Meta')
 local Project = require('@develfish-repo.project/lib/Project')
 local Wrapper = require('@develfish-repo.project/lib/Wrapper')
 local Manifest = require('./Manifest')
-local Entry = require('./swaggerui/Entry')
-local ComposeVolume = require('./compose/Volume')
-local ComposeNetwork = require('./compose/Network')
+local Entry = require('./SwaggerUi/Entry')
+local ComposeVolume = require('./Compose/Volume')
+local ComposeNetwork = require('./Compose/Network')
 
 local SwaggerUi = {}
 

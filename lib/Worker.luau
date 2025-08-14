@@ -1,7 +1,7 @@
 local Meta = require('@develfish-repo.utils/lib/Meta')
 local Wrapper = require('@develfish-repo.project/lib/Wrapper')
 local Project = require('@develfish-repo.project/lib/Project')
-local Volume = require('@root/lib/general/Volume')
+local ComposeVolume = require('./Compose/Volume')
 
 export type Worker = {
   project: Project.Project,
@@ -11,7 +11,7 @@ export type Worker = {
   depends_on: {string},
   links: {string},
   packages: {string},
-  volumes: {Volume.Volume},
+  volumes: {ComposeVolume.Volume},
 
   with_env_variable: (self: Worker, name: string, value: string) -> Worker,
   with_env_variables: (self: Worker, environment: {[string]: any}) -> Worker,
@@ -37,7 +37,7 @@ export type Unwrapped = {
 }
 
 local Worker = {
-  Volume = Volume,
+  Volume = ComposeVolume,
 
   project = nil,
   environment = nil,

@@ -2,7 +2,7 @@
 
 local Meta = require('@develfish-repo.utils/lib/Meta')
 local URI = require('@develfish-repo.utils/lib/URI')
-local Proxy = require('@root/lib/haproxy/Proxy')
+local Proxy = require('./Proxy')
 
 local Route = {}
 
