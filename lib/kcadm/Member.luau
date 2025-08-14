@@ -1,23 +1,23 @@
-local Meta = require('@develfish-repo.utils/lib/Meta')
-local Wrapper = require('@develfish-repo.project/lib/Wrapper')
+--!strict
 
-export type Member = {
+local Meta = require('@develfish-repo.utils/lib/Meta')
+
+local Member = {}
+
+export type Member = typeof(Member) & MemberProps
+
+export type MemberProps = {
   username: string?,
   group: string?,
-} & Wrapper.Unwrappable<Unwrapped>
+}
 
 export type Unwrapped = {
   username: string?,
   group: string?,
 }
 
-local Member = {
-  username = nil,
-  group = nil
-}
-
-function Member:new(o): Member
-  return Meta:type(o, self, 'Member')
+function Member:new(o: MemberProps): Member
+  return Meta:type(o, self, 'Kcadm.Member')
 end
 
 function Member:from(username: string, group: string): Member
@@ -27,10 +27,11 @@ function Member:from(username: string, group: string): Member
   })
 end
 
-function Member.unwrap(self: Member): Unwrapped
+function Member:unwrap(): Unwrapped
+  local this = self::Member
   return {
-    username = self.username,
-    group = self.group
+    username = this.username,
+    group = this.group
   }
 end
 

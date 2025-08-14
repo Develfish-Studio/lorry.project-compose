@@ -1,18 +1,14 @@
+--!strict
+
 local Meta = require('@develfish-repo.utils/lib/Meta')
-local Wrapper = require('@develfish-repo.project/lib/Wrapper')
 local Path = require('@develfish-repo.utils/lib/Path')
 local Server = require('@root/lib/haproxy/Server')
 
-export type Proxy = {
-  path: string,
-  cors: string?,
-  servers: {},
+local Proxy = {}
 
-  with_cors: (self: Proxy, cors: string | boolean | {}) -> Proxy,
-  with_server: (self: Proxy, server: Server.Server) -> Proxy,
-} & Wrapper.Unwrappable<Unwrapped>
+export type Proxy = typeof(Proxy)
 
-export type Unwrapped = {
+export type ProxyProps = {
   path: string,
   cors: {
     origin: string?,
@@ -20,17 +16,26 @@ export type Unwrapped = {
     credentials: string?,
     methods: string?,
   }?,
+  servers: {},
+}
+
+export type ProxyImpl = Proxy & ProxyProps
+
+export type CorsData = {
+  origin: string?,
+  headers: string?,
+  credentials: string?,
+  methods: string?,
+}
+
+export type Unwrapped = {
+  path: string,
+  cors: CorsData?,
   servers: {Server.Unwrapped},
 }
 
-local Proxy = {
-  path = nil,
-  cors = nil,
-  servers = {},
-}
-
-function Proxy:new(o): Proxy
-  return Meta:type(o, self, 'Proxy')
+function Proxy:new(o: ProxyProps): Proxy
+  return Meta:type(o, self, 'Haproxy.Proxy')
 end
 
 function Proxy:from_path_string(path_string: string): Proxy
@@ -43,37 +48,68 @@ end
 
 function Proxy:from_uri_string(uri_string: string): Proxy
   local server = Server:from_uri_string(uri_string)
-  return Proxy:from_path_string('/'):with_server(server)
+  return Proxy:from_path_string('/'):setup({server})
 end
 
-function Proxy:with_cors(cors): Proxy
+function Proxy:with_cors(cors: string | boolean | CorsData): Proxy
+  local this = self::ProxyImpl
   if type(cors) == 'string' then
-    self.cors = { origin = cors }
+    this.cors = { origin = cors }
   elseif type(cors) == 'boolean' and cors then
-    self.cors = {}
+    this.cors = {}
   elseif type(cors) == 'table' then
-    self.cors.origin = cors.origin or '*'
-    self.cors.headers = cors.headers or '*'
-    self.cors.credentials = cors.credentials or 'true'
-    self.cors.methods = cors.methods or 'GET, DELETE, OPTIONS, POST, PUT, PATCH'
+    this.cors = cors
   end
-  return self
+  return this
 end
 
-function Proxy:with_server(server: Server.Server): Proxy
-  self.servers[#self.servers + 1] = server
+function Proxy:with_server(uri_string: string): Proxy
+  local this = self::ProxyImpl
+  this.servers[#self.servers + 1] = Server:from_uri_string(uri_string)
+  return this
+end
+
+function Proxy:with_optional_server(uri_string: string): Proxy
+  local this = self::ProxyImpl
+  this.servers[#self.servers + 1] = Server:from_uri_string(uri_string):with_optional(true)
+  return this
+end
+
+function Proxy:with_optional_backup_server(uri_string: string): Proxy
+  local this = self::ProxyImpl
+  this.servers[#self.servers + 1] = Server:from_uri_string(uri_string):with_optional(true):with_backup(true)
+  return this
+end
+
+function Proxy:with_required_server(uri_string: string): Proxy
+  local this = self::ProxyImpl
+  this.servers[#self.servers + 1] = Server:from_uri_string(uri_string):with_optional(false)
+  return this
+end
+
+function Proxy:setup(children: {Server.Server}): Proxy
+  children = children or Meta:array {}
+
+  for _, child in children do
+    local tag = Meta:typeof(child)
+    if tag == 'Haproxy.Server' then
+      self.servers[#self.servers + 1] = child::Server.Server
+    end
+  end
+
   return self
 end
 
 function Proxy:unwrap(): Unwrapped
+  local this = self::ProxyImpl
   local servers = {}
   for i, server in self.servers do
     servers[i] = server:unwrap()
   end
   return {
-    path = self.path,
-    cors = self.cors,
-    servers = servers
+    path = this.path,
+    cors = this.cors,
+    servers = this.servers
   }
 end
 

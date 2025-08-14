@@ -1,14 +1,19 @@
+--!strict
+
 local Meta = require('@develfish-repo.utils/lib/Meta')
-local Wrapper = require('@develfish-repo.project/lib/Wrapper')
 local URI = require('@develfish-repo.utils/lib/URI')
 
-export type Grant = {
+local Grant = {}
+
+export type Grant = typeof(Grant) & GrantProps
+
+export type GrantProps = {
   kind: string?,
   username: string?,
   group: string?,
   client: string?,
   role: string?,
-} & Wrapper.Unwrappable<Unwrapped>
+}
 
 export type Unwrapped = {
   kind: string?,
@@ -18,16 +23,8 @@ export type Unwrapped = {
   role: string?,
 }
 
-local Grant = {
-  kind = nil,
-  username = nil,
-  group = nil,
-  client = nil,
-  role = nil,
-}
-
-function Grant:new(o): Grant
-  return Meta:type(o, self, 'Grant')
+function Grant:new(o: GrantProps): Grant
+  return Meta:type(o, self, 'Kcadm.Grant')
 end
 
 function Grant:from(target_uri_string: string, role_uri_string: string): Grant
@@ -70,13 +67,14 @@ function Grant:from(target_uri_string: string, role_uri_string: string): Grant
   })
 end
 
-function Grant.unwrap(self: Grant): Unwrapped
+function Grant:unwrap(): Unwrapped
+  local this = self::Grant
   return {
-    kind = self.kind,
-    username = self.username,
-    group = self.group,
-    client = self.client,
-    role = self.role,
+    kind = this.kind,
+    username = this.username,
+    group = this.group,
+    client = this.client,
+    role = this.role,
   }
 end
 

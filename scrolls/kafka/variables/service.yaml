@@ -6,8 +6,6 @@ manifest:
     resources:
       limits:
         memory: 500M
-  volumes:
-    - env-kafka:/bitnami/kafka
   profiles:
     - env
     - app
@@ -28,4 +26,4 @@ manifest:
     KAFKA_INTER_BROKER_LISTENER_NAME: CLIENT_LOCAL
     KAFKA_KRAFT_CLUSTER_ID: NTdhMjIzMzMyYmFlNGUxMD
   networks:
-    default: {}
+    - default

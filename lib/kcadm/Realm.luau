@@ -1,20 +1,21 @@
-local Meta = require('@develfish-repo.utils/lib/Meta')
-local Wrapper = require('@develfish-repo.project/lib/Wrapper')
+--!strict
 
-export type Realm = {
+local Meta = require('@develfish-repo.utils/lib/Meta')
+
+local Realm = {}
+
+export type Realm = typeof(Realm) & RealmProps
+
+export type RealmProps = {
   name: string?
-} & Wrapper.Unwrappable<Unwrapped>
+}
 
 export type Unwrapped = {
   name: string?
 }
 
-local Realm = {
-  name = nil,
-}
-
-function Realm:new(o): Realm
-  return Meta:type(o, self, 'Realm')
+function Realm:new(o: RealmProps): Realm
+  return Meta:type(o, self, 'Kcadm.Realm')
 end
 
 function Realm:from(name: string): Realm
@@ -24,8 +25,9 @@ function Realm:from(name: string): Realm
 end
 
 function Realm:unwrap(): Unwrapped
+  local this = self::Realm
   return {
-    name = self.name,
+    name = this.name,
   }
 end
 

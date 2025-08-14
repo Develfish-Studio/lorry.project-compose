@@ -1,7 +1,12 @@
+local Lorry = require('@develfish-repo.utils/lib/Lorry')
+local Haproxy = require('@root/lib/Haproxy')
+
+local variables: Haproxy.Unwrapped = Lorry:variables()
+
 local config = {
   services = {
-    [service.name] = service.manifest
-  },
+    [variables.service.name] = variables.service.manifest
+  }
 }
 
-template:println(yaml:stringify(config))
+Lorry.Template:print(Lorry.Yaml:stringify(config))

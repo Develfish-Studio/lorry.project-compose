@@ -1,9 +1,15 @@
-local result = {
+local Lorry = require('@develfish-repo.utils/lib/Lorry')
+local Pgadmin = require('@root/lib/Pgadmin')
+
+local variables: Pgadmin.Unwrapped = Lorry:variables()
+
+
+local config = {
   Servers = {}
 }
 
-for i, server in servers do
-  result.Servers[`{i}`] = server
+for i, server in variables.servers do
+  config.Servers[`{i}`] = server
 end
 
-template:println(json:stringify(result))
+Lorry.Template:print(Lorry.Json:stringify(config))

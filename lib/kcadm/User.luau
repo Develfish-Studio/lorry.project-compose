@@ -1,11 +1,16 @@
-local Meta = require('@develfish-repo.utils/lib/Meta')
-local Wrapper = require('@develfish-repo.project/lib/Wrapper')
+--!strict
 
-export type User = {
+local Meta = require('@develfish-repo.utils/lib/Meta')
+
+local User = {}
+
+export type User = typeof(User) & UserProps
+
+export type UserProps = {
   email: string?,
   username: string?,
   password: string?,
-} & Wrapper.Unwrappable<Unwrapped>
+}
 
 export type Unwrapped = {
   email: string?,
@@ -13,14 +18,8 @@ export type Unwrapped = {
   password: string?,
 }
 
-local User = {
-  email = nil,
-  username = nil,
-  password = nil,
-}
-
-function User:new(o): User
-  return Meta:type(o, self, 'User')
+function User:new(o: UserProps): User
+  return Meta:type(o, self, 'Kcadm.User')
 end
 
 function User:from_credentials(email: string, password: string): User
@@ -32,11 +31,12 @@ function User:from_credentials(email: string, password: string): User
   })
 end
 
-function User.unwrap(self: User): Unwrapped
+function User:unwrap(): Unwrapped
+  local this = self::User
   return {
-    email = self.email,
-    username = self.username,
-    password = self.password,
+    email = this.email,
+    username = this.username,
+    password = this.password,
   }
 end
 

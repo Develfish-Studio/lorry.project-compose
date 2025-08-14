@@ -1,23 +1,21 @@
+--!strict
+
 local Meta = require('@develfish-repo.utils/lib/Meta')
 local Wrapper = require('@develfish-repo.project/lib/Wrapper')
 
-export type Grant = {
-  policy: string?,
-  username: string?,
-} & Wrapper.Unwrappable<Unwrapped>
+local Grant = {}
 
-export type Unwrapped = {
+export type Grant = typeof(Grant) & GrantProps & Wrapper.Unwrappable<Unwrapped>
+
+export type GrantProps = {
   policy: string?,
   username: string?,
 }
 
-local Grant = {
-  policy = nil,
-  username = nil,
-}
+export type Unwrapped = GrantProps
 
-function Grant:new(o): Grant
-  return Meta:type(o, self, 'Grant')
+function Grant:new(o: GrantProps): Grant
+  return Meta:type(o, self, 'Mcli.Grant')
 end
 
 function Grant:from(username: string, policy: string): Grant
@@ -27,10 +25,11 @@ function Grant:from(username: string, policy: string): Grant
   })
 end
 
-function Grant.unwrap(self: Grant): Unwrapped
+function Grant:unwrap(): Unwrapped
+  local this = self::Grant
   return {
-    policy = self.policy,
-    username = self.username,
+    policy = this.policy,
+    username = this.username,
   }
 end
 

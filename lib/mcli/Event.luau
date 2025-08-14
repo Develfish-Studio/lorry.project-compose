@@ -1,32 +1,30 @@
+--!strict
+
 local Meta = require('@develfish-repo.utils/lib/Meta')
 local Wrapper = require('@develfish-repo.project/lib/Wrapper')
 local Bucket = require('./Bucket')
 
-export type Event = {
+local Event = {}
+
+export type Event = typeof(Event) & EventProps & Wrapper.Unwrappable<Unwrapped>
+
+export type EventProps = {
   bucket: Bucket.Bucket,
   notify: string,
   events: {string},
-
-  with_event: (self: Event, event: string) -> Event,
-  with_events: (self: Event, events: {string}) -> Event,
-} & Wrapper.Unwrappable<Unwrapped>
+}
 
 export type Unwrapped = {
   bucket: Bucket.Unwrapped,
   notify: string,
   events: {string}?,
 }
-local Event = {
-  bucket = nil,
-  notify = nil,
-  events = nil,
-}
 
-function Event:new(o): Event
-  return Meta:type(o, self, 'Event')
+function Event:new(o: EventProps): Event
+  return Meta:type(o, self, 'Mcli.Event')
 end
 
-function Event:from(bucket: string, notify: string): Event
+function Event:from(bucket: Bucket.Bucket, notify: string): Event
   return Event:new({
     bucket = bucket,
     notify = notify,
@@ -35,29 +33,33 @@ function Event:from(bucket: string, notify: string): Event
 end
 
 function Event:with_event(event: string): Event
-  self.events[#self.events + 1] = event
-  return self
+  local this = self::Event
+  this.events[#this.events + 1] = event
+  return this
 end
 
 function Event:with_events(events: {string}): Event
+  local this = self::Event
   for _, event in events do
-    self.events[#self.events + 1] = event
+    this.events[#this.events + 1] = event
   end
-  return self
+  return this
 end
 
 function Event:unwrap_events(): {string}?
-  if #self.events == 0 then
+  local this = self::Event
+  if #this.events == 0 then
     return nil
   end
-  return self.events
+  return this.events
 end
 
 function Event:unwrap(): Unwrapped
+  local this = self::Event
   return {
-    bucket = self.bucket,
-    notify = self.notify,
-    events = self:unwrap_events(),
+    bucket = this.bucket,
+    notify = this.notify,
+    events = this:unwrap_events()
   }
 end
 

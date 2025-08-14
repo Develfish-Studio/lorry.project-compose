@@ -1,87 +1,99 @@
+--!strict
+
 local Meta = require('@develfish-repo.utils/lib/Meta')
-local Wrapper = require('@develfish-repo.project/lib/Wrapper')
 local Project = require('@develfish-repo.project/lib/Project')
+local Manifest = require('./Manifest')
+local ComposeVolume = require('./compose/Volume')
+local ComposeNetwork = require('./compose/Network')
 
-export type Spa = {
+local Spa = {}
+
+export type Spa = typeof(Spa)
+
+export type SpaImpl = Spa & SpaProps
+
+export type SpaProps = {
   project: Project.Project,
-  name: string?,
-  image: string?,
-  environment: {[string]: any},
-  depends_on: {string},
-  links: {string},
-  volumes: {string},
-
-  with_env_variable: (self: Spa, name: string, value: string) -> Spa,
-  with_env_variables: (self: Spa, environment: {[string]: any}) -> Spa,
-
-} & Wrapper.Unwrappable<Unwrapped>
+  name: string,
+  manifest: Manifest.Manifest,
+}
 
 export type Unwrapped = {
   project: Project.UnwrappedProject,
   service: {
-    name: string?,
-    manifest: {
-      image: string?,
-      environment: {[string]: any},
-      depends_on: {string}?,
-      links: {string}?,
-      volumes: {string}?,
-    }
+    name: string,
+    manifest: Manifest.Unwrapped,
   }
 }
 
-local Spa = {
-  project = nil,
-  name = nil,
-  image = nil,
-  environment = nil,
-  volumes = nil,
-}
-
-function Spa:new(o)
+function Spa:new(o: SpaProps): Spa
   return Meta:type(o, self, 'Spa')
 end
 
-function Spa:from(project: Project.Project, name: string, image: string, environment: {[string]: any}?): Spa
+function Spa:from(project: Project.Project, name: string, image: string): Spa
   assert(project ~= nil)
+  assert(image ~= nil)
   return Spa:new({
     project = project,
     name = name,
     image = image,
-    volumes = Meta:array {},
-    environment = environment or Meta:table {},
+    manifest = Manifest:from_empty(),
   })
 end
 
-function Spa.with_env_variable(self: Spa, name: string, value: string): Spa
-  self.environment[name] = value
+function Spa:with_env_variable(name: string, value: string): Spa
+  local this = self::SpaImpl
+  this.manifest:with_env_variable(name, value)
   return self
 end
 
-function Spa.with_env_variables(self: Spa, environment: {[string]: any}): Spa
+function Spa:with_env_variables(environment: Manifest.Environment): Spa
+  local this = self::SpaImpl
   environment = environment or Meta:table {}
-
   for name, value in environment do
-    self.environment[name] = value
+    this.manifest:with_env_variable(name, value)
   end
-
-  return self
+  return this
 end
 
-function Spa.unwrap(self: Spa): Unwrapped
+function Spa:with_link(service: string, alias: string?): Spa
+  local this = self::SpaImpl
+  this.manifest:with_child(Manifest.Link:from(service, alias))
+  return this
+end
+
+function Spa:with_depends_on(service: string): Spa
+  local this = self::SpaImpl
+  this.manifest:with_child(Manifest.DependsOn:from(service))
+  return this
+end
+
+function Spa:with_volume_ref(volume: ComposeVolume.Volume, path: string): Spa
+  local this = self::SpaImpl
+  this.manifest:with_child(Manifest.Volume:from_volume(volume, path))
+  return this
+end
+
+function Spa:with_volume_source(source: string, path: string): Spa
+  local this = self::SpaImpl
+  this.manifest:with_child(Manifest.Volume:from_source(source, path))
+  return this
+end
+
+function Spa:with_network(network: ComposeNetwork.Network): Spa
+  local this = self::SpaImpl
+  this.manifest:with_child(Manifest.Network:from(network))
+  return this
+end
+
+function Spa:unwrap(): Unwrapped
+  local this = self::SpaImpl
   return {
-    project = self.project:unwrap_project(),
+    project = this.project:unwrap_project(),
     service = {
-      manifest = {
-        image = self.image,
-        environment = self.environment,
-        depends_on = Wrapper:array_or_nil(self.depends_on),
-        links = Wrapper:array_or_nil(self.links),
-        volumes = Meta:array {
-          `../../config/app/{self.name}/templates:/etc/nginx/templates`
-        }
-      }
-    }
+      name = this.name,
+      manifest = this.manifest:unwrap()
+    },
   }
 end
 

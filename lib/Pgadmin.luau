@@ -1,56 +1,114 @@
+--!strict
+
 local Meta = require('@develfish-repo.utils/lib/Meta')
 local Project = require('@develfish-repo.project/lib/Project')
 local Wrapper = require('@develfish-repo.project/lib/Wrapper')
-local Server = require('@root/lib/pgadmin/Server')
+local Manifest = require('./Manifest')
+local Server = require('./pgadmin/Server')
+local ComposeVolume = require('./compose/Volume')
+local ComposeNetwork = require('./compose/Network')
 
-export type Pgadmin = {
+local Pgadmin = {}
+
+export type Pgadmin = typeof(Pgadmin)
+
+export type PgadminProps = {
   project: Project.Project,
+  name: string,
+  manifest: Manifest.Manifest,
   servers: {Server.Server},
+}
 
-  with_rules: (self: Pgadmin, children: {any}) -> Pgadmin,
-} & Wrapper.Unwrappable<Unwrapped>
+export type PgadminImpl = Pgadmin & PgadminProps
 
 export type Unwrapped = {
   project: Project.UnwrappedProject,
   servers: {Server.Unwrapped},
+  service: {
+    name: string,
+    manifest: Manifest.Unwrapped,
+  }
 }
 
-local Pgadmin = {
-  Server = Server,
+export type AnyChild = Server.Server | Manifest.AnyChild
 
-  project = nil,
-  servers = nil,
-}
-
-function Pgadmin:new(o): Pgadmin
+function Pgadmin:new(o: PgadminProps): Pgadmin
   return Meta:type(o, self, 'Pgadmin')
 end
 
-function Pgadmin:from(project: Project.Project): Pgadmin
+function Pgadmin:from(project: Project.Project, name: string): Pgadmin
   assert(project ~= nil)
+  assert(name ~= nil)
   return Pgadmin
     :new({
       project = project,
-      servers = Meta:array {}
+      name = name,
+      manifest = Manifest:from_empty(),
+      servers = Meta:array {},
     })
 end
 
-function Pgadmin.with_rules(self: Pgadmin, children: {any}): Pgadmin
-  children = children or {}
+function Pgadmin:with_datasource(datasource: Server.Datasource): Pgadmin
+  local this = self::PgadminImpl
+  this.servers[#this.servers + 1] = Server:from_datasource(datasource)
+  return this
+end
+
+function Pgadmin:with_link(service: string, alias: string?): Pgadmin
+  local this = self::PgadminImpl
+  this.manifest:with_child(Manifest.Link:from(service, alias))
+  return this
+end
+
+function Pgadmin:with_depends_on(service: string): Pgadmin
+  local this = self::PgadminImpl
+  this.manifest:with_child(Manifest.DependsOn:from(service))
+  return this
+end
+
+function Pgadmin:with_volume_ref(volume: ComposeVolume.Volume, path: string): Pgadmin
+  local this = self::PgadminImpl
+  this.manifest:with_child(Manifest.Volume:from_volume(volume, path))
+  return this
+end
+
+function Pgadmin:with_volume_source(source: string, path: string): Pgadmin
+  local this = self::PgadminImpl
+  this.manifest:with_child(Manifest.Volume:from_source(source, path))
+  return this
+end
+
+function Pgadmin:with_network(network: ComposeNetwork.Network): Pgadmin
+  local this = self::PgadminImpl
+  this.manifest:with_child(Manifest.Network:from(network))
+  return this
+end
+
+function Pgadmin:setup(children: {AnyChild}): Pgadmin
+  local this = self::PgadminImpl
+  children = children or Meta:array {}
 
   for _, child in children do
-    if child.__type == 'Server' then
-      self.servers[#self.servers + 1] = child
+    local tag = Meta:typeof(child)
+    if tag == 'Pgadmin.Server' then
+      this.servers[#self.servers + 1] = child::Server.Server
+    else
+      this.manifest:with_child(child::Manifest.AnyChild)
     end
   end
 
-  return self
+  return this
 end
 
-function Pgadmin.unwrap(self: Pgadmin): Unwrapped
+function Pgadmin:unwrap(): Unwrapped
+  local this = self::PgadminImpl
   return {
-    project = self.project:unwrap_project(),
+    project = this.project:unwrap_project(),
     servers = Wrapper:unwrap_array(self.servers),
+    service = {
+      name = this.name,
+      manifest = this.manifest:unwrap()
+    }
   }
 end
 

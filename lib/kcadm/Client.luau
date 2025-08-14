@@ -1,23 +1,23 @@
-local Meta = require('@develfish-repo.utils/lib/Meta')
-local Wrapper = require('@develfish-repo.project/lib/Wrapper')
+--!strict
 
-export type Client = {
+local Meta = require('@develfish-repo.utils/lib/Meta')
+
+local Client = {}
+
+export type Client = typeof(Client) & ClientProps
+
+export type ClientProps = {
   name: string?,
   secret: string?,
-} & Wrapper.Unwrappable<Unwrapped>
+}
 
 export type Unwrapped = {
   name: string?,
   secret: string?,
 }
 
-local Client = {
-  name = nil,
-  secret = nil,
-}
-
-function Client:new(o): Client
-  return Meta:type(o, self, 'Client')
+function Client:new(o: ClientProps): Client
+  return Meta:type(o, self, 'Kcadm.Client')
 end
 
 function Client:from(name: string, secret: string): Client
@@ -27,10 +27,11 @@ function Client:from(name: string, secret: string): Client
   })
 end
 
-function Client.unwrap(self: Client): Unwrapped
+function Client:unwrap(): Unwrapped
+  local this = self::Client
   return {
-    name = self.name,
-    secret = self.secret,
+    name = this.name,
+    secret = this.secret,
   }
 end
 

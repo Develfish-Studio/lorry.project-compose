@@ -6,8 +6,6 @@ manifest:
     resources:
       limits:
         memory: 250M
-  depends_on:
-    - env-kafka
   profiles:
     - env
     - admin
@@ -15,4 +13,4 @@ manifest:
     KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: env-kafka:29092
     KAFKA_CLUSTERS_0_NAME: local
   networks:
-    default: {}
+    - default

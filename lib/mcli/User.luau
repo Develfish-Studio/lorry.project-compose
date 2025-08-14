@@ -1,23 +1,21 @@
+--!strict
+
 local Meta = require('@develfish-repo.utils/lib/Meta')
 local Wrapper = require('@develfish-repo.project/lib/Wrapper')
 
-export type User = {
-  username: string?,
-  password: string?,
-} & Wrapper.Unwrappable<Unwrapped>
+local User = {}
 
-export type Unwrapped = {
-  username: string?,
-  password: string?,
+export type User = typeof(User) & UserProps & Wrapper.Unwrappable<Unwrapped>
+
+export type UserProps = {
+  username: string,
+  password: string,
 }
 
-local User = {
-  username = nil,
-  password = nil,
-}
+export type Unwrapped = UserProps
 
-function User:new(o): User
-  return Meta:type(o, self, 'User')
+function User:new(o: UserProps): User
+  return Meta:type(o, self, 'Mcli.User')
 end
 
 function User:from(username: string, password: string): User
@@ -27,10 +25,11 @@ function User:from(username: string, password: string): User
   })
 end
 
-function User.unwrap(self: User): Unwrapped
+function User:unwrap(): Unwrapped
+  local this = self::User
   return {
-    username = self.username,
-    password = self.password,
+    username = this.username,
+    password = this.password,
   }
 end
 

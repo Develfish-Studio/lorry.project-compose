@@ -1,23 +1,23 @@
-local Meta = require('@develfish-repo.utils/lib/Meta')
-local Wrapper = require('@develfish-repo.project/lib/Wrapper')
+--!strict
 
-export type Role = {
+local Meta = require('@develfish-repo.utils/lib/Meta')
+
+local Role = {}
+
+export type Role = typeof(Role) & RoleProps
+
+export type RoleProps = {
   name: string?,
   client_name: string?,
-} & Wrapper.Unwrappable<Unwrapped>
+}
 
 export type Unwrapped = {
   name: string?,
   client: string?,
 }
 
-local Role = {
-  name = nil,
-  client_name = nil,
-}
-
-function Role:new(o): Role
-  return Meta:type(o, self, 'Role')
+function Role:new(o: RoleProps): Role
+  return Meta:type(o, self, 'Kcadm.Role')
 end
 
 function Role:from(name: string): Role
@@ -39,10 +39,11 @@ function Role:client(client_name: string, name: string): Role
   })
 end
 
-function Role.unwrap(self: Role): Unwrapped
+function Role:unwrap(): Unwrapped
+  local this = self::Role
   return {
-    name = self.name,
-    client = self.client_name,
+    name = this.name,
+    client = this.client_name,
   }
 end
 

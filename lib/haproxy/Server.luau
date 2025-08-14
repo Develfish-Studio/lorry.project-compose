@@ -1,41 +1,36 @@
+--!strict
+
 local Meta = require('@develfish-repo.utils/lib/Meta')
-local Wrapper = require('@develfish-repo.project/lib/Wrapper')
 local URI = require('@develfish-repo.utils/lib/URI')
 
-export type Server = {
+local Server = {}
+
+export type Server = typeof(Server)
+
+export type CheckData = {
+  port: number?,
+}
+
+export type ServerProps = {
   hostname: string?,
   port: number?,
   optional: boolean?,
   backup: boolean?,
-  check: {
-    port: number?,
-  }?,
+  check: CheckData?,
+}
 
-  with_optional: (self: Server, optional: boolean) -> Server,
-  with_backup: (self: Server, backup: boolean) -> Server,
-  with_check: (self: Server, check: number | string | boolean | {port: number}) -> Server,
-} & Wrapper.Unwrappable<Unwrapped>
+export type ServerImpl = Server & ServerProps
 
 export type Unwrapped = {
   hostname: string?,
   port: number?,
   optional: boolean?,
   backup: boolean?,
-  check: {
-    port: number?,
-  }?,
+  check: CheckData?,
 }
 
-local Server = {
-  hostname = nil,
-  port = nil,
-  optional = false,
-  backup = false,
-  check = true,
-}
-
-function Server:new(o): Server
-  return Meta:type(o, self, 'Server')
+function Server:new(o: ServerProps): Server
+  return Meta:type(o, self, 'Haproxy.Server')
 end
 
 function Server:from_uri_string(uri_string: string): Server
@@ -44,45 +39,50 @@ function Server:from_uri_string(uri_string: string): Server
   return Server:new({
     hostname = uri.hostname,
     port = port,
+    check = {},
   })
 end
 
-function Server:with_check(check: number | string | boolean | {port: number}): Server
+function Server:with_check(check: number | string | boolean | CheckData): Server
+  local this = self::ServerImpl
   if type(check) == 'number' then
-    self.check = { port = check::number }
+    this.check = { port = check::number }
   elseif type(check) == 'string' then
-    self.check = { port = tonumber(check)::number }
+    this.check = { port = tonumber(check)::number }
   elseif type(check) == 'boolean' then
     if check then
-      self.check = {}
+      this.check = {}
     else
-      self.check = nil
+      this.check = nil
     end
   elseif type(check) == 'table' then
-    self.check = {
+    this.check = {
       port = check.port
     }
   end
-  return self
+  return this
 end
 
-function Server.with_optional(self: Server, optional: boolean): Server
-  self.optional = optional
-  return self
+function Server:with_optional(optional: boolean): Server
+  local this = self::ServerImpl
+  this.optional = optional
+  return this
 end
 
-function Server.with_backup(self: Server, backup: boolean): Server
-  self.backup = backup
-  return self
+function Server:with_backup(backup: boolean): Server
+  local this = self::ServerImpl
+  this.backup = backup
+  return this
 end
 
-function Server.unwrap(self: Server): Unwrapped
+function Server:unwrap(): Unwrapped
+  local this = self::ServerImpl
   return {
-    hostname = self.hostname,
-    port = self.port,
-    check = self.check,
-    optional = self.optional,
-    backup = self.backup,
+    hostname = this.hostname,
+    port = this.port,
+    check = this.check,
+    optional = this.optional,
+    backup = this.backup,
   }
 end
 

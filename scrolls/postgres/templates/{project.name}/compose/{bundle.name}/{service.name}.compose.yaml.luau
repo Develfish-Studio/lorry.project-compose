@@ -1,8 +1,12 @@
+local Lorry = require('@develfish-repo.utils/lib/Lorry')
+local Postgres = require('@root/lib/Postgres')
+
+local variables: Postgres.Unwrapped = Lorry:variables()
+
 local config = {
   services = {
-    [service.name] = service.manifest
-  },
-  volumes = volumes,
+    [variables.service.name] = variables.service.manifest
+  }
 }
 
-template:println(yaml:stringify(config))
+Lorry.Template:print(Lorry.Yaml:stringify(config))

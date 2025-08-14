@@ -23,7 +23,7 @@ export type Unwrapped = {
   MaintenanceDB: string?,
 }
 
-type Datasource = { uri: string?, username: string?, password: string? }
+export type Datasource = { uri: string?, username: string?, password: string? }
 
 local Server = {
   Name = 'Postgres',

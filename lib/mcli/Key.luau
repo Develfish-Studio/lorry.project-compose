@@ -1,26 +1,22 @@
+--!strict
+
 local Meta = require('@develfish-repo.utils/lib/Meta')
 local Wrapper = require('@develfish-repo.project/lib/Wrapper')
 
-export type Key = {
-  username: string?,
-  access_key: string?,
-  secret_key: string?,
-} & Wrapper.Unwrappable<Unwrapped>
+local Key = {}
 
-export type Unwrapped = {
-  username: string?,
-  access_key: string?,
-  secret_key: string?,
+export type Key = typeof(Key) & KeyProps & Wrapper.Unwrappable<Unwrapped>
+
+export type KeyProps = {
+  username: string,
+  access_key: string,
+  secret_key: string,
 }
 
-local Key = {
-  username = nil,
-  access_key = nil,
-  secret_key = nil,
-}
+export type Unwrapped = KeyProps
 
-function Key:new(o): Key
-  return Meta:type(o, self, 'Key')
+function Key:new(o: KeyProps): Key
+  return Meta:type(o, self, 'Mcli.Key')
 end
 
 function Key:from(username: string, access_key: string, secret_key: string): Key
@@ -31,11 +27,12 @@ function Key:from(username: string, access_key: string, secret_key: string): Key
   })
 end
 
-function Key.unwrap(self: Key): Unwrapped
+function Key:unwrap(): Unwrapped
+  local this = self::Key
   return {
-    username = self.username,
-    access_key = self.access_key,
-    secret_key = self.secret_key,
+    username = this.username,
+    access_key = this.access_key,
+    secret_key = this.secret_key,
   }
 end
 

@@ -1,35 +1,25 @@
+--!strict
+
 local Meta = require('@develfish-repo.utils/lib/Meta')
 local Wrapper = require('@develfish-repo.project/lib/Wrapper')
 
-export type KafkaTarget = {
+local KafkaTarget = {}
+
+export type KafkaTarget = typeof(KafkaTarget) & KafkaTargetProps & Wrapper.Unwrappable<Unwrapped>
+
+export type KafkaTargetProps = {
   name: string?,
   topic: string?,
   brokers: {string},
   events: {[string]: {bucket: string, actions: {string}}},
+}
 
-  with_topic: (self: KafkaTarget, topic: string) -> KafkaTarget,
-  with_broker: (self: KafkaTarget, broker: string) -> KafkaTarget,
-  with_event: (self: KafkaTarget, bucket: string, action: string) -> KafkaTarget
-
-} & Wrapper.Unwrappable<Unwrapped>
-
-export type Unwrapped = {
+export type Unwrapped = KafkaTargetProps & {
   type: 'KafkaTarget',
-  name: string?,
-  topic: string?,
-  brokers: {string},
-  events: {[string]: {bucket: string, actions: {string}}},
 }
 
-local KafkaTarget = {
-  name = nil,
-  topic = nil,
-  brokers = nil,
-  events = nil,
-}
-
-function KafkaTarget:new(o): KafkaTarget
-  return Meta:type(o, self, 'KafkaTarget')
+function KafkaTarget:new(o: KafkaTargetProps): KafkaTarget
+  return Meta:type(o, self, 'Mcli.KafkaTarget')
 end
 
 function KafkaTarget:from(name: string): KafkaTarget
@@ -40,33 +30,37 @@ function KafkaTarget:from(name: string): KafkaTarget
   })
 end
 
-function KafkaTarget.with_topic(self: KafkaTarget, topic: string): KafkaTarget
-  self.topic = topic
-  return self
+function KafkaTarget:with_topic(topic: string): KafkaTarget
+  local this = self::KafkaTarget
+  this.topic = topic
+  return this
 end
 
-function KafkaTarget.with_broker(self: KafkaTarget, broker: string): KafkaTarget
-  self.brokers[#self.brokers + 1] = broker
-  return self
+function KafkaTarget:with_broker(broker: string): KafkaTarget
+  local this = self::KafkaTarget
+  this.brokers[#this.brokers + 1] = broker
+  return this
 end
 
-function KafkaTarget.with_event(self: KafkaTarget, bucket: string, action: string): KafkaTarget
-  local event = self.events[bucket] or Meta:table {
+function KafkaTarget:with_event(bucket: string, action: string): KafkaTarget
+  local this = self::KafkaTarget
+  local event = this.events[bucket] or Meta:table {
     bucket = bucket,
     actions = Meta:array {}
   }
   event.actions[#event.actions + 1] = action
-  self.events[bucket] = event
-  return self
+  this.events[bucket] = event
+  return this
 end
 
-function KafkaTarget.unwrap(self: KafkaTarget): Unwrapped
+function KafkaTarget:unwrap(): Unwrapped
+  local this = self::KafkaTarget
   return {
-    type = 'KafkaTarget',
-    name = self.name,
-    topic = self.topic or self.name,
-    brokers = self.brokers,
-    events = self.events,
+    type = "KafkaTarget" :: "KafkaTarget",
+    name = this.name,
+    topic = this.topic or this.name,
+    brokers = this.brokers,
+    events = this.events,
   }
 end
 

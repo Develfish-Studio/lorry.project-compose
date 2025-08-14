@@ -1,7 +1,12 @@
+local Lorry = require('@develfish-repo.utils/lib/Lorry')
+local Keycloak = require('@root/lib/Keycloak')
+
+local variables: Keycloak.Unwrapped = Lorry:variables()
+
 local config = {
   services = {
-    [service.name] = service.manifest
-  },
+    [variables.service.name] = variables.service.manifest
+  }
 }
 
-template:println(yaml:stringify(config))
+Lorry.Template:print(Lorry.Yaml:stringify(config))

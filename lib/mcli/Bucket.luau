@@ -1,27 +1,21 @@
+--!strict
+
 local Meta = require('@develfish-repo.utils/lib/Meta')
 local Wrapper = require('@develfish-repo.project/lib/Wrapper')
 
-export type Bucket = {
-  name: string?,
-  anonymous_access: {string},
+local Bucket = {}
 
-  with_anonymous_access: (self: Bucket, command: string) -> Bucket
-} & Wrapper.Unwrappable<Unwrapped>
+export type Bucket = typeof(Bucket) & BucketProps & Wrapper.Unwrappable<Unwrapped>
 
-export type Unwrapped = {
+export type BucketProps = {
   name: string?,
   anonymous_access: {string},
 }
 
-local Bucket = {
-  name = nil,
-  anonymous_access = nil,
-}
+export type Unwrapped = BucketProps
 
-Bucket.__index = Bucket
-
-function Bucket:new(o): Bucket
-  return Meta:type(o, self, 'Bucket')
+function Bucket:new(o: BucketProps): Bucket
+  return Meta:type(o, self, 'Mcli.Bucket')
 end
 
 function Bucket:from(name: string): Bucket
@@ -32,15 +26,17 @@ function Bucket:from(name: string): Bucket
   })
 end
 
-function Bucket.with_anonymous_access(self: Bucket, command: string): Bucket
-  self.anonymous_access[#self.anonymous_access + 1] = command
-  return self
+function Bucket:with_anonymous_access(command: string): Bucket
+  local this = self::Bucket
+  this.anonymous_access[#this.anonymous_access + 1] = command
+  return this
 end
 
-function Bucket.unwrap(self: Bucket): Unwrapped
+function Bucket:unwrap(): Unwrapped
+  local this = self::Bucket
   return {
-    name = self.name,
-    anonymous_access = self.anonymous_access,
+    name = this.name,
+    anonymous_access = this.anonymous_access,
   }
 end
 

@@ -1,20 +1,21 @@
-local Meta = require('@develfish-repo.utils/lib/Meta')
-local Wrapper = require('@develfish-repo.project/lib/Wrapper')
+--!strict
 
-export type Group = {
+local Meta = require('@develfish-repo.utils/lib/Meta')
+
+local Group = {}
+
+export type Group = typeof(Group) & GroupProps
+
+export type GroupProps = {
   name: string?,
-} & Wrapper.Unwrappable<Unwrapped>
+}
 
 export type Unwrapped = {
   name: string?,
 }
 
-local Group = {
-  name = nil,
-}
-
-function Group:new(o): Group
-  return Meta:type(o, self, 'Group')
+function Group:new(o: GroupProps): Group
+  return Meta:type(o, self, 'Kcadm.Group')
 end
 
 function Group:from(name: string): Group
@@ -23,9 +24,10 @@ function Group:from(name: string): Group
   })
 end
 
-function Group.unwrap(self: Group): Unwrapped
+function Group:unwrap(): Unwrapped
+  local this = self::Group
   return {
-    name = self.name,
+    name = this.name,
   }
 end
 

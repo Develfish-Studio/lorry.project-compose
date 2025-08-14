@@ -15,7 +15,7 @@ export type Unwrapped = {
   password: string?,
 }
 
-type Datasource = { uri: string?, username: string?, password: string? }
+export type Datasource = { uri: string?, username: string?, password: string? }
 
 local Database = {
   name = 'postgres',
