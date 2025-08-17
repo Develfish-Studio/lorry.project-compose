@@ -1,0 +1,6 @@
+name: env-kafka-ui
+manifest:
+  image: dpage/pgadmin4
+  profiles:
+    - env
+    - admin

@@ -1,10 +1,11 @@
 --!strict
 
 local Meta = require('@develfish-repo.utils/lib/Meta')
+local Wrapper = require('@develfish-repo.project/lib/Wrapper')
 
 local Group = {}
 
-export type Group = typeof(Group) & GroupProps
+export type Group = typeof(Group) & GroupProps & Wrapper.Unwrappable<Unwrapped>
 
 export type GroupProps = {
   name: string?,

@@ -1,0 +1,6 @@
+name: env-postgres
+manifest:
+  image: postgres:14
+  profiles:
+    - env
+    - app

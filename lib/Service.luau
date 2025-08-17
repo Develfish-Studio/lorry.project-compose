@@ -2,9 +2,7 @@
 
 local Meta = require('@develfish-repo.utils/lib/Meta')
 local Project = require('@develfish-repo.project/lib/Project')
-local Manifest = require('./Manifest')
-local ComposeVolume = require('./Compose/Volume')
-local ComposeNetwork = require('./Compose/Network')
+local Manifest = require('./Manifest/Manifest')
 
 local Service = {}
 
@@ -26,6 +24,8 @@ export type Unwrapped = {
   }
 }
 
+export type ConfigurerFunc = (manifest: Manifest.Manifest) -> ()
+
 export type AnyChild = Manifest.AnyChild
 
 function Service:new(o: ServiceProps): Service
@@ -43,33 +43,11 @@ function Service:from(project: Project.Project, name: string): Service
     })
 end
 
-function Service:with_link(service: string, alias: string?): Service
+function Service:configure(configurer: {ConfigurerFunc}): Service
   local this = self::ServiceImpl
-  this.manifest:with_child(Manifest.Link:from(service, alias))
-  return this
-end
-
-function Service:with_depends_on(service: string): Service
-  local this = self::ServiceImpl
-  this.manifest:with_child(Manifest.DependsOn:from(service))
-  return this
-end
-
-function Service:with_volume_ref(volume: ComposeVolume.Volume, path: string): Service
-  local this = self::ServiceImpl
-  this.manifest:with_child(Manifest.Volume:from_volume(volume, path))
-  return this
-end
-
-function Service:with_volume_source(source: string, path: string): Service
-  local this = self::ServiceImpl
-  this.manifest:with_child(Manifest.Volume:from_source(source, path))
-  return this
-end
-
-function Service:with_network(network: ComposeNetwork.Network): Service
-  local this = self::ServiceImpl
-  this.manifest:with_child(Manifest.Network:from(network))
+  for _, func in configurer do
+    func(this.manifest)
+  end
   return this
 end
 

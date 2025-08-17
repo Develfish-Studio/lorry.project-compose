@@ -1,10 +1,11 @@
 --!strict
 
 local Meta = require('@develfish-repo.utils/lib/Meta')
+local Wrapper = require('@develfish-repo.project/lib/Wrapper')
 
 local Member = {}
 
-export type Member = typeof(Member) & MemberProps
+export type Member = typeof(Member) & MemberProps & Wrapper.Unwrappable<Unwrapped>
 
 export type MemberProps = {
   username: string?,

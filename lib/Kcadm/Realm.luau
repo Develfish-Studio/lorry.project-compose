@@ -1,10 +1,11 @@
 --!strict
 
 local Meta = require('@develfish-repo.utils/lib/Meta')
+local Wrapper = require('@develfish-repo.project/lib/Wrapper')
 
 local Realm = {}
 
-export type Realm = typeof(Realm) & RealmProps
+export type Realm = typeof(Realm) & RealmProps & Wrapper.Unwrappable<Unwrapped>
 
 export type RealmProps = {
   name: string?

@@ -1,0 +1,5 @@
+name: worker-example
+manifest:
+  image: worker_example:latest
+  profiles:
+    - app

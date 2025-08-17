@@ -16,7 +16,7 @@ function Network:new(o: NetworkProps): Network
 end
 
 function Network:from(network: ComposeNetwork.Network): Network
-  assert(Network ~= nil)
+  assert(network ~= nil)
   return Network:new({
     network = network,
   })

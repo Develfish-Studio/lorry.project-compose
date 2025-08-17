@@ -2,10 +2,11 @@
 
 local Meta = require('@develfish-repo.utils/lib/Meta')
 local URI = require('@develfish-repo.utils/lib/URI')
+local Wrapper = require('@develfish-repo.project/lib/Wrapper')
 
 local Grant = {}
 
-export type Grant = typeof(Grant) & GrantProps
+export type Grant = typeof(Grant) & GrantProps & Wrapper.Unwrappable<Unwrapped>
 
 export type GrantProps = {
   kind: string?,

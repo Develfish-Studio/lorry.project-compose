@@ -1,0 +1,5 @@
+name: app-ui
+manifest:
+  image: nginx:latest
+  profiles:
+    - app

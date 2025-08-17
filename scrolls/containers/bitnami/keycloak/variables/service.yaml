@@ -1,0 +1,6 @@
+name: env-keycloak
+manifest:
+  image: bitnami/keycloak:latest
+  profiles:
+    - env
+    - app

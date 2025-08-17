@@ -1,48 +1,45 @@
+--!strict
+
 local Meta = require('@develfish-repo.utils/lib/Meta')
 local URI = require('@develfish-repo.utils/lib/URI')
 local Path = require('@develfish-repo.utils/lib/Path')
 local Wrapper = require('@develfish-repo.project/lib/Wrapper')
 
-export type Database = {
-  name: string?,
-  username: string?,
-  password: string?,
-} & Wrapper.Unwrappable<Unwrapped>
+local Database = {}
 
-export type Unwrapped = {
-  name: string?,
-  username: string?,
+export type Database = typeof(Database) & DatabaseProps & Wrapper.Unwrappable<Unwrapped>
+
+export type DatabaseProps = {
+  name: string,
+  username: string,
   password: string?,
 }
 
-export type Datasource = { uri: string?, username: string?, password: string? }
+export type Unwrapped = DatabaseProps
 
-local Database = {
-  name = 'postgres',
-  username = 'postgres',
-  password = nil,
-}
+export type Datasource = { url: string, username: string?, password: string? }
 
-function Database:new(o): Database
+function Database:new(o: DatabaseProps): Database
   return Meta:type(o, self, 'Database')
 end
 
 function Database:from_datasource(datasource: Datasource): Database
-  assert(datasource.uri ~= nil)
-  local uri = URI:parse_jdbc(datasource.uri)
-  local database = Path:parse(uri.path):normalize():path()
+  assert(datasource.url ~= nil)
+  local uri = URI:parse_jdbc(datasource.url)
+  local database = uri.path ~= nil and Path:parse(uri.path):normalize():path() or "postgres"
   return Database:new({
     name = database,
-    username = datasource.username,
+    username = datasource.username ~= nil and datasource.username or "postgres",
     password = datasource.password,
   })
 end
 
-function Database.unwrap(self: Database): Unwrapped
+function Database:unwrap(): Unwrapped
+  local this = self::Database
   return {
-    name = self.name,
-    username = self.username,
-    password = self.password
+    name = this.name,
+    username = this.username,
+    password = this.password
   }
 end
 

@@ -1,0 +1,6 @@
+name: env-swagger-ui
+manifest:
+  image: swaggerapi/swagger-ui
+  profiles:
+    - env
+    - app

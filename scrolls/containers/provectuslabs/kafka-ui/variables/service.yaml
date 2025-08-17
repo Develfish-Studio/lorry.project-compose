@@ -1,0 +1,7 @@
+name: env-kafka-ui
+manifest:
+  image: provectuslabs/kafka-ui:master
+  restart: unless-stopped
+  profiles:
+    - env
+    - admin

@@ -1,0 +1,10 @@
+name: env-kafka
+cluster_id: NTdhMjIzMzMyYmFlNGUxMD
+manifest:
+  image: bitnami/kafka:3.5.1
+  profiles:
+    - env
+    - app
+  ports:
+    - '9092:9092'
+    - '29092:29092'

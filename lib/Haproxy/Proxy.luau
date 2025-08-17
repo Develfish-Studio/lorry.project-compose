@@ -1,6 +1,7 @@
 --!strict
 
 local Meta = require('@develfish-repo.utils/lib/Meta')
+local Wrapper = require('@develfish-repo.project/lib/Wrapper')
 local Path = require('@develfish-repo.utils/lib/Path')
 local Server = require('./Server')
 
@@ -16,7 +17,7 @@ export type ProxyProps = {
     credentials: string?,
     methods: string?,
   }?,
-  servers: {},
+  servers: {Server.Server},
 }
 
 export type ProxyImpl = Proxy & ProxyProps
@@ -65,51 +66,50 @@ end
 
 function Proxy:with_server(uri_string: string): Proxy
   local this = self::ProxyImpl
-  this.servers[#self.servers + 1] = Server:from_uri_string(uri_string)
+  this.servers[#this.servers + 1] = Server:from_uri_string(uri_string)
   return this
 end
 
 function Proxy:with_optional_server(uri_string: string): Proxy
   local this = self::ProxyImpl
-  this.servers[#self.servers + 1] = Server:from_uri_string(uri_string):with_optional(true)
+  this.servers[#this.servers + 1] = Server:from_uri_string(uri_string):with_optional(true)
   return this
 end
 
 function Proxy:with_optional_backup_server(uri_string: string): Proxy
   local this = self::ProxyImpl
-  this.servers[#self.servers + 1] = Server:from_uri_string(uri_string):with_optional(true):with_backup(true)
+  this.servers[#this.servers + 1] = Server:from_uri_string(uri_string):with_optional(true):with_backup(true)
   return this
 end
 
 function Proxy:with_required_server(uri_string: string): Proxy
   local this = self::ProxyImpl
-  this.servers[#self.servers + 1] = Server:from_uri_string(uri_string):with_optional(false)
+  this.servers[#this.servers + 1] = Server:from_uri_string(uri_string):with_optional(false)
   return this
 end
 
 function Proxy:setup(children: {Server.Server}): Proxy
+  local this = self::ProxyImpl
   children = children or Meta:array {}
-
   for _, child in children do
     local tag = Meta:typeof(child)
     if tag == 'Haproxy.Server' then
-      self.servers[#self.servers + 1] = child::Server.Server
+      this.servers[#this.servers + 1] = child::Server.Server
     end
   end
-
   return self
 end
 
 function Proxy:unwrap(): Unwrapped
   local this = self::ProxyImpl
   local servers = {}
-  for i, server in self.servers do
+  for i, server in this.servers do
     servers[i] = server:unwrap()
   end
   return {
     path = this.path,
     cors = this.cors,
-    servers = this.servers
+    servers = Wrapper:unwrap_array(this.servers)
   }
 end
 

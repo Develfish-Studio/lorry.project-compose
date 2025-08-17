@@ -1,0 +1,5 @@
+name: app-service-api
+manifest:
+  image: eclipse-temurin:17-jdk-alpine
+  profiles:
+    - app

@@ -1,10 +1,11 @@
 --!strict
 
 local Meta = require('@develfish-repo.utils/lib/Meta')
+local Wrapper = require('@develfish-repo.project/lib/Wrapper')
 
 local Role = {}
 
-export type Role = typeof(Role) & RoleProps
+export type Role = typeof(Role) & RoleProps & Wrapper.Unwrappable<Unwrapped>
 
 export type RoleProps = {
   name: string?,

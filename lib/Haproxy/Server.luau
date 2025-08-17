@@ -1,11 +1,12 @@
 --!strict
 
 local Meta = require('@develfish-repo.utils/lib/Meta')
+local Wrapper = require('@develfish-repo.project/lib/Wrapper')
 local URI = require('@develfish-repo.utils/lib/URI')
 
 local Server = {}
 
-export type Server = typeof(Server)
+export type Server = typeof(Server) & Wrapper.Unwrappable<Unwrapped>
 
 export type CheckData = {
   port: number?,

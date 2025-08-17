@@ -8,36 +8,36 @@ luau:
   globals:
     - tonumber
 scrolls:
-  app:
-    path: scrolls/app
   make:
     path: scrolls/make
-  spa:
-    path: scrolls/spa
   compose:
     path: scrolls/compose
-  haproxy:
-    path: scrolls/haproxy
-  postgres:
-    path: scrolls/postgres
-  kafka:
-    path: scrolls/kafka
-  kafka-ui:
-    path: scrolls/kafka-ui
-  kcadm:
-    path: scrolls/kcadm
-  keycloak:
-    path: scrolls/keycloak
-  pgadmin:
-    path: scrolls/pgadmin
-  swagger-ui:
-    path: scrolls/swagger-ui
-  minio:
-    path: scrolls/minio
-  mcli:
-    path: scrolls/mcli
-  worker:
-    path: scrolls/worker
+  containers/official/spring-app:
+    path: scrolls/containers/official/spring-app
+  containers/official/nginx-spa:
+    path: scrolls/containers/official/nginx-spa
+  containers/official/haproxy:
+    path: scrolls/containers/official/haproxy
+  containers/official/postgres:
+    path: scrolls/containers/official/postgres
+  containers/official/worker:
+    path: scrolls/containers/official/worker
+  containers/bitnami/kafka:
+    path: scrolls/containers/bitnami/kafka
+  containers/bitnami/kcadm:
+    path: scrolls/containers/bitnami/kcadm
+  containers/provectuslabs/kafka-ui:
+    path: scrolls/containers/provectuslabs/kafka-ui
+  containers/bitnami/keycloak:
+    path: scrolls/containers/bitnami/keycloak
+  containers/bitnami/minio:
+    path: scrolls/containers/bitnami/minio
+  containers/bitnami/mcli:
+    path: scrolls/containers/bitnami/mcli
+  containers/dpage/pgadmin:
+    path: scrolls/containers/dpage/pgadmin
+  containers/swaggerapi/swagger-ui:
+    path: scrolls/containers/swaggerapi/swagger-ui
 dependencies:
   develfish-repo.utils:
     uri: git@github.com:Develfish-Studio/develfish-repo.utils.git

@@ -1,67 +1,57 @@
+--!strict
+
 local Meta = require('@develfish-repo.utils/lib/Meta')
 local URI = require('@develfish-repo.utils/lib/URI')
 local Path = require('@develfish-repo.utils/lib/Path')
 local Wrapper = require('@develfish-repo.project/lib/Wrapper')
 
-export type Server = {
-  Name: string?,
-  Group: string?,
-  Port: number?,
-  Username: string?,
-  Host: string?,
-  SSLMode: string?,
-  MaintenanceDB: string?,
-} & Wrapper.Unwrappable<Unwrapped>
+local Server = {}
 
-export type Unwrapped = {
-  Name: string?,
-  Group: string?,
-  Port: number?,
-  Username: string?,
-  Host: string?,
-  SSLMode: string?,
-  MaintenanceDB: string?,
+export type Server = typeof(Server) & ServerProps & Wrapper.Unwrappable<Unwrapped>
+
+export type ServerProps = {
+  data: ServerData
 }
 
-export type Datasource = { uri: string?, username: string?, password: string? }
-
-local Server = {
-  Name = 'Postgres',
-  Group = 'Default',
-  Port = 5432,
-  Username = 'postgres',
-  Host = 'env-postgres',
-  SSLMode = 'prefer',
-  MaintenanceDB = 'postgres'
+export type ServerData = {
+  Name: string,
+  Group: string,
+  Port: number,
+  Username: string,
+  Host: string,
+  SSLMode: string,
+  MaintenanceDB: string,
 }
 
-function Server:new(o): Server
+export type Unwrapped = ServerData
+
+export type Datasource = { url: string, username: string?, password: string? }
+
+function Server:new(o: ServerProps): Server
   return Meta:type(o, self, 'Server')
 end
 
 function Server:from_datasource(datasource: Datasource): Server
-  assert(datasource.uri ~= nil)
-  local uri = URI:parse_jdbc(datasource.uri)
-  local database = Path:parse(uri.path):normalize():path()
-  return Server:new({
+  assert(datasource.url ~= nil)
+  local uri = URI:parse_jdbc(datasource.url)
+  local database = uri.path ~= nil and Path:parse(uri.path):normalize():path() or "postgres"
+  local data: ServerData = {
     Name = database,
-    Port = if uri.port == nil then nil else tonumber(uri.port),
-    Username = datasource.username,
-    Host = uri.hostname,
-    MaintenanceDB = database,
+    Group = 'Default',
+    Port = uri.port ~= nil and tonumber(uri.port) or 5432,
+    Username = datasource.username ~= nil and datasource.username or "postgres",
+    Host = uri.hostname ~= nil and uri.hostname or "localhost",
+    SSLMode = 'prefer',
+    MaintenanceDB = database
+  }
+  return Server:new({
+    data = data
   })
 end
 
-function Server.unwrap(self: Server): Unwrapped
-  return {
-    Name = self.Name,
-    Group = self.Group,
-    Port = self.Port,
-    Username = self.Username,
-    Host = self.Host,
-    SSLMode = self.SSLMode,
-    MaintenanceDB = self.MaintenanceDB
-  }
+function Server:unwrap(): Unwrapped
+  local this = self::Server
+  return this.data
 end
 
 return Server

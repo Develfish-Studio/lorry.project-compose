@@ -1,0 +1,5 @@
+name: env-kcadm
+manifest:
+  image: bitnami/keycloak:latest
+  profiles:
+    - never

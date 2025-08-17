@@ -1,0 +1,5 @@
+name: env-mcli
+manifest:
+  image: bitnami/minio
+  profiles:
+    - never
