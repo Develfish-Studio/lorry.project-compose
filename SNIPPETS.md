@@ -29,17 +29,40 @@ Description of Kafka service based on `bitnami/kafka` container.
 ```lua snippet Lorry:generate "@develfish-repo.project-compose/containers/bitnami/kafka"
 Lorry:generate "@develfish-repo.project-compose/containers/bitnami/kafka" {
   target = '@',
-  variables = Kafka:from(${1:project}, "${3:service:env-kafka}")
+  variables = Kafka
+    :from(${1:project}, "${2:service}")
+}
 ```
 
-## Generate Minio Container
+## Generate minio service description
 
-```lua snippet Lorry:generate "@develfish-repo.project-compose/minio"
-Lorry:generate "@develfish-repo.project-compose/minio" {
+Description of Minio service based on `bitnami/minio` container.
+
+`project` is a reference to your project definition.\
+`service` is a name of your service.
+
+```lua snippet Lorry:generate "@develfish-repo.project-compose/containers/bitnami/minio"
+Lorry:generate "@develfish-repo.project-compose/containers/bitnami/minio" {
   target = '@',
   variables = Minio
-    :from(project)
-    :with_link('env-haproxy:minio.local.example.com')
-    :unwrap()
+    :from(${1:project}, "${2:service}")
+    :with_admin("minioadmin", "minioadmin")
+}
+```
+
+## Generate keycloak service description
+
+Description of Keycloak service based on `bitnami/keycloak` container.
+
+`project` is a reference to your project definition.\
+`service` is a name of your service.\
+`datasource` is a database connection config.\
+
+```lua snippet Lorry:generate "@develfish-repo.project-compose/containers/bitnami/keycloak"
+Lorry:generate "@develfish-repo.project-compose/containers/bitnami/keycloak" {
+  target = '@',
+  variables = Keycloak
+    :from(${1:project}, "${2:service}")
+    :with_datasource(${3:datasource})
 }
 ```
