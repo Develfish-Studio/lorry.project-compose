@@ -24,7 +24,7 @@ frontend routes
   use_backend default_cors if acl_is_options
 
   {#- Render frontends #}
-  {% for route in routes %}
+  {% for route in service.routes %}
   acl acl__{{route.name}}__host hdr(host) -i {{route.hostname}}
   {%- if route.redirect %}
   {%- if route.redirect.type == 'prefix' %}
@@ -50,7 +50,7 @@ backend default_cors
   http-request return status 200
 
 {#- Render backends #}
-{%- for route in routes -%}
+{%- for route in service.routes -%}
 {%- for proxy in route.proxies %}
 {# Blank line #}
 backend {{route.name}}__{{loop.index}}

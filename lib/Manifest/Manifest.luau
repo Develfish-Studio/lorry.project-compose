@@ -120,6 +120,12 @@ function Manifest:with_env_variable(name: string, value: string?): Manifest
   return this
 end
 
+function Manifest:with_port(port: string): Manifest
+  local this = self::ManifestImpl
+  this:with_child(Port:from_string(port))
+  return this
+end
+
 function Manifest:with_depends_on(service: string): Manifest
   local this = self::ManifestImpl
   this:with_child(DependsOn:from(service))

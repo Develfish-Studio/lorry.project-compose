@@ -1,6 +1,9 @@
+--!strict
+
 local describe = require("@develfish-repo.testing/lib/describe")
+local Meta = require("@develfish-repo.utils/lib/Meta")
 local Project = require("@develfish-repo.project/lib/Project")
-local Haproxy = require("@root/lib/Haproxy")
+local Haproxy = require("@root/lib/Haproxy/Haproxy")
 
 describe("Haproxy Record") (
   function (it)
@@ -9,27 +12,20 @@ describe("Haproxy Record") (
         local project = Project:from("example_project")
 
         local haproxy = Haproxy
-          :from(project)
-          :with_rules({
-            Haproxy.Route
-              :from_arrow('http://service-1.example.com', 'http://service-1:8080');
-            Haproxy.Route
-              :from_arrow('http://service-2.example.com', 'http://service-2:8080');
-          })
+          :from(project, "text-haproxy")
+          :with_arrow('http://service-1.example.com', 'http://service-1:8080')
+          :with_arrow('http://service-2.example.com', 'http://service-2:8080')
 
-        check.eq(haproxy.__type, "Haproxy")
-        check.eq(haproxy.project, project)
+        check.eq(Meta:typeof(haproxy), "Haproxy")
 
         local unwrapped = haproxy:unwrap()
 
         check.eq(unwrapped.project.name, "example_project")
-        -- check.eq(#unwrapped.servers, 2)
-        -- check.eq(unwrapped.servers[1].Host, 'env-postgres')
-        -- check.eq(unwrapped.servers[1].Name, 'one')
-        -- check.eq(unwrapped.servers[1].Port, 5432)
-        -- check.eq(unwrapped.servers[1].Group, 'Default')
-        -- check.eq(unwrapped.servers[1].SSLMode, 'prefer')
-        -- check.eq(unwrapped.servers[1].MaintenanceDB, 'one')
+
+        local routes = check.required(unwrapped.service.routes)
+
+        check.eq(#routes, 2);
+        check.eq(routes[1].hostname, 'service-1.example.com');
       end
     )
   end

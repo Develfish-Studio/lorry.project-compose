@@ -24,8 +24,6 @@ export type ComposeProps = {
 
 export type ComposeImpl = Compose & ComposeProps
 
-export type UnwrappedNetwork = {
-}
 export type Unwrapped = {
   project: Project.UnwrappedProject,
   config: {

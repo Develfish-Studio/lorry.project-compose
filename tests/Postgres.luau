@@ -1,4 +1,7 @@
+--!strict
+
 local describe = require("@develfish-repo.testing/lib/describe")
+local Meta = require("@develfish-repo.utils/lib/Meta")
 local Project = require("@develfish-repo.project/lib/Project")
 local Postgres = require("@root/lib/Postgres")
 
@@ -9,21 +12,20 @@ describe("Postgres Record") (
         local project = Project:from("example_project")
 
         local postgres = Postgres
-          :from(project)
-          :with_rules({
-            Postgres.Database:from_datasource({ uri = 'jdbc:postgresql://localhost:5432/example', username = 'ExampleUser', password = 'ExamplePa$$w0rd' }),
-          })
+          :from(project, "test-postgres")
+          :with_datasource({ url = 'jdbc:postgresql://localhost:5432/example', username = 'ExampleUser', password = 'ExamplePa$$w0rd' })
 
-        check.eq(postgres.__type, "Postgres")
-        check.eq(postgres.project, project)
+        check.eq(Meta:typeof(postgres), "Postgres")
 
         local unwrapped = postgres:unwrap()
 
         check.eq(unwrapped.project.name, "example_project")
-        check.eq(#unwrapped.databases, 1)
-        check.eq(unwrapped.databases[1].name, 'example')
-        check.eq(unwrapped.databases[1].username, 'ExampleUser')
-        check.eq(unwrapped.databases[1].password, 'ExamplePa$$w0rd')
+
+        local databases = check.required(unwrapped.service.databases)
+        check.eq(#databases, 1)
+        check.eq(databases[1].name, 'example')
+        check.eq(databases[1].username, 'ExampleUser')
+        check.eq(databases[1].password, 'ExamplePa$$w0rd')
       end
     )
   end

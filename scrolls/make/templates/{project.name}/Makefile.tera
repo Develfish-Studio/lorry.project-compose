@@ -3,7 +3,7 @@
 up:
 	docker compose \
 	  {%- for profile in run.profiles %}
-	  --profile '{{profile}}' \
+	  --profile '{{profile.name}}' \
 	  {%- endfor %}
 	  up -d
 
@@ -21,7 +21,7 @@ build:
 {# Blank line #}
 build/{{image.bundle}}/{{image.name}}:
 	docker build \
-	  --tag {{image.namespace}}/{{image.name}}:{{image.version}} \
-	  {{image.context}}
+	  --tag {{image.namespace}}/{{image.name}}:{{image.version | default(value = '1.0-SNAPSHOT')}} \
+	  {{image.context | default(value = '.')}}
 {%- endfor %}
 {%- endif %}

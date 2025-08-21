@@ -27,9 +27,9 @@ export type HaproxyImpl = Haproxy & HaproxyProps
 
 export type Unwrapped = {
   project: Project.UnwrappedProject,
-  routes: {Route.Unwrapped},
   service: {
     name: string,
+    routes: {Route.Unwrapped},
     manifest: Manifest.Unwrapped,
   }
 }
@@ -93,9 +93,9 @@ function Haproxy:unwrap(): Unwrapped
   local this = self::HaproxyImpl
   return {
     project = this.project:unwrap_project(),
-    routes = Wrapper:unwrap_array(self.routes),
     service = {
       name = this.name,
+      routes = Wrapper:unwrap_array(self.routes),
       manifest = this.manifest:unwrap(),
     }
   }
