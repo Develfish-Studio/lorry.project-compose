@@ -2,6 +2,7 @@
 
 local Meta = require('@develfish-repo.utils/lib/Meta')
 local Wrapper = require('@develfish-repo.project/lib/Wrapper')
+local PropTypes = require('@develfish-repo.project/lib/PropTypes')
 
 local SpringKafka = {}
 
@@ -82,8 +83,10 @@ function SpringKafka:from_bootstrap(bootstrap_servers: string): SpringKafka
   })
 end
 
-function SpringKafka:from(props: SpringKafkaProps): SpringKafka
-  return SpringKafka:new(props)
+function SpringKafka:from_remote(props: PropTypes.KafkaRemote): SpringKafka
+  return SpringKafka:new({
+    bootstrap_servers = props.bootstrap_servers
+  })
 end
 
 function SpringKafka:with_consumer_props(props: SpringKafkaConsumerProps): SpringKafka

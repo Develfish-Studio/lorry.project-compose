@@ -2,6 +2,7 @@
 
 local Meta = require('@develfish-repo.utils/lib/Meta')
 local Wrapper = require('@develfish-repo.project/lib/Wrapper')
+local PropTypes = require('@develfish-repo.project/lib/PropTypes')
 
 local SpringDatasource = {}
 
@@ -22,8 +23,8 @@ function SpringDatasource:new(o: SpringDatasourceProps): SpringDatasource
   return Meta:type(o, self, 'SpringApp.SpringDatasource')
 end
 
-function SpringDatasource:from(props: SpringDatasourceProps): SpringDatasource
-  return SpringDatasource:new(props)
+function SpringDatasource:from_ds(ds: PropTypes.Datasource): SpringDatasource
+  return SpringDatasource:new(ds)
 end
 
 function SpringDatasource:unwrap(): Unwrapped

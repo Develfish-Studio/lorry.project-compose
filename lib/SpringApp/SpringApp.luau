@@ -3,6 +3,7 @@
 local Meta = require('@develfish-repo.utils/lib/Meta')
 local Project = require('@develfish-repo.project/lib/Project')
 local Wrapper = require('@develfish-repo.project/lib/Wrapper')
+local PropTypes = require('@develfish-repo.project/lib/PropTypes')
 local Manifest = require('../Manifest/Manifest')
 local SpringDatasource = require('./SpringDatasource')
 local SpringKafka = require('./SpringKafka')
@@ -104,21 +105,21 @@ function SpringApp:with_child(child: AnyChild): SpringApp
   return this
 end
 
-function SpringApp:with_spring_datasource(props: SpringDatasource.SpringDatasourceProps): SpringApp
+function SpringApp:with_spring_datasource(ds: PropTypes.Datasource): SpringApp
   local this = self::SpringAppImpl
-  this:with_child(SpringDatasource:from(props))
+  this:with_child(SpringDatasource:from_ds(ds))
   return this
 end
 
-function SpringApp:with_spring_kafka(props: SpringKafka.SpringKafkaProps): SpringApp
+function SpringApp:with_spring_kafka(remote: PropTypes.KafkaRemote): SpringApp
   local this = self::SpringAppImpl
-  this:with_child(SpringKafka:from(props))
+  this:with_child(SpringKafka:from_remote(remote))
   return this
 end
 
-function SpringApp:with_minio_client(props: MinioClient.MinioClientProps): SpringApp
+function SpringApp:with_minio_client(remote: PropTypes.MinioRemote): SpringApp
   local this = self::SpringAppImpl
-  this:with_child(MinioClient:from(props))
+  this:with_child(MinioClient:from_remote(remote))
   return this
 end
 
@@ -127,43 +128,6 @@ function SpringApp:with_minio_bucket(name: string, upload_policy: MinioBucket.Up
   this:with_child(MinioBucket:from(name, upload_policy))
   return this
 end
-
--- function SpringApp:with_spring_datasource(datasource: { uri: string?, username: string?, password: string? }): SpringApp
---   local this = self::SpringAppImpl
---   assert(datasource ~= nil)
---   assert(datasource.uri ~= nil)
---   return this:with_env_variables({
---     SPRING_DATASOURCE_URL = datasource.uri,
---     SPRING_DATASOURCE_USERNAME = datasource.username,
---     SPRING_DATASOURCE_PASSWORD = datasource.password,
---   })
--- end
-
--- function SpringApp:with_app_openid_client(client: { uri: string?, client_id: string?, client_secret: string?, redirect_uri: string?, issuer_uri: string? }): SpringApp
---   local this = self::SpringAppImpl
---   assert(client ~= nil)
---   assert(client.client_id ~= nil)
---   assert(client.client_secret ~= nil)
---   return this:with_env_variables({
---     APP_OPENID_CLIENT_CLIENTID = client.client_id,
---     APP_OPENID_CLIENT_CLIENTSECRET = client.client_secret,
---     APP_OPENID_CLIENT_REDIRECTURI = client.redirect_uri,
---     APP_OPENID_CLIENT_ISSUERURI = client.issuer_uri,
---   })
--- end
-
--- function SpringApp:with_app_minio_client(client: { uri: string, access_key: string?, secret_key: string? }): SpringApp
---   local this = self::SpringAppImpl
---   assert(client ~= nil)
---   assert(client.uri ~= nil)
---   assert(client.access_key ~= nil)
---   assert(client.secret_key ~= nil)
---   return this:with_env_variables({
---     APP_MINIO_CLIENT_TARGET_SERVER = client.uri,
---     APP_MINIO_CLIENT_ACCESS_KEY = client.access_key,
---     APP_MINIO_CLIENT_SECRET_KEY = client.secret_key,
---   })
--- end
 
 function SpringApp:unwrap(): Unwrapped
   local this = self::SpringAppImpl

@@ -4,7 +4,7 @@ local Meta = require('@develfish-repo.utils/lib/Meta')
 local Lorry = require('@develfish-repo.utils/lib/Lorry')
 local Kcadm = require('@root/lib/Kcadm/Kcadm')
 local Remote = require('@root/lib/Kcadm/Remote')
-local PropTypes = require('@root/lib/PropTypes')
+local PropTypes = require('@develfish-repo.project/lib/PropTypes')
 
 local variables: Kcadm.Unwrapped & PropTypes.WithBundle = Lorry:variables()
 local service = variables.service

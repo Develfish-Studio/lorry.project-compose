@@ -1,7 +1,7 @@
 local Meta = require('@develfish-repo.utils/lib/Meta')
 local Lorry = require('@develfish-repo.utils/lib/Lorry')
 local Pgadmin = require('@root/lib/Pgadmin/Pgadmin')
-local PropTypes = require('@root/lib/PropTypes')
+local PropTypes = require('@develfish-repo.project/lib/PropTypes')
 
 local variables: Pgadmin.Unwrapped & PropTypes.WithBundle = Lorry:variables()
 local service = variables.service

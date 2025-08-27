@@ -2,6 +2,7 @@
 
 local Meta = require('@develfish-repo.utils/lib/Meta')
 local Wrapper = require('@develfish-repo.project/lib/Wrapper')
+local PropTypes = require('@develfish-repo.project/lib/PropTypes')
 
 local MinioClient = {}
 
@@ -22,7 +23,7 @@ function MinioClient:new(o: MinioClientProps): MinioClient
   return Meta:type(o, self, 'SpringApp.MinioClient')
 end
 
-function MinioClient:from(props: MinioClientProps): MinioClient
+function MinioClient:from_remote(props: PropTypes.MinioRemote): MinioClient
   return MinioClient:new(props)
 end
 

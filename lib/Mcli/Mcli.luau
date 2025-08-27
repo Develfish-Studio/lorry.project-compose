@@ -3,6 +3,7 @@
 local Meta = require('@develfish-repo.utils/lib/Meta')
 local Project = require('@develfish-repo.project/lib/Project')
 local Wrapper = require('@develfish-repo.project/lib/Wrapper')
+local PropTypes = require('@develfish-repo.project/lib/PropTypes')
 local Manifest = require('../Manifest/Manifest')
 local User = require('./User')
 local Key = require('./Key')
@@ -125,9 +126,15 @@ function Mcli:with_child(child: AnyChild): Mcli
   return this
 end
 
-function Mcli:with_remote(server: string, access_key: string, secret_key: string): Mcli
+function Mcli:with_remote(remote: PropTypes.MinioRemote): Mcli
   local this = self::McliImpl
-  this:with_child(Remote:from(server, access_key, secret_key))
+  this:with_child(Remote:new(remote))
+  return this
+end
+
+function Mcli:with_target(target_server: string, access_key: string, secret_key: string): Mcli
+  local this = self::McliImpl
+  this:with_child(Remote:from(target_server, access_key, secret_key))
   return this
 end
 

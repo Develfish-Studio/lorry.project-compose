@@ -4,7 +4,7 @@ local Meta = require('@develfish-repo.utils/lib/Meta')
 local Lorry = require('@develfish-repo.utils/lib/Lorry')
 local Mcli = require('@root/lib/Mcli/Mcli')
 local Remote = require('@root/lib/Mcli/Remote')
-local PropTypes = require('@root/lib/PropTypes')
+local PropTypes = require('@develfish-repo.project/lib/PropTypes')
 
 local variables: Mcli.Unwrapped & PropTypes.WithBundle = Lorry:variables()
 local service = variables.service
@@ -35,7 +35,7 @@ local config = {
         }
       },
       environment = Meta:append(manifest.environment) {
-        MINIO_TARGET_SERVER = remote.server,
+        MINIO_TARGET_SERVER = remote.target_server,
         MINIO_ACCESS_KEY = remote.access_key,
         MINIO_SECRET_KEY = remote.secret_key,
       },
