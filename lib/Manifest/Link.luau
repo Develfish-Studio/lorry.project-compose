@@ -1,5 +1,5 @@
-local Meta = require('@develfish-repo.utils/lib/Meta')
-local String = require('@develfish-repo.utils/lib/String')
+local Meta = require('@lorry.utils/lib/Meta')
+local String = require('@lorry.utils/lib/String')
 
 local Link = {}
 

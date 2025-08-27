@@ -1,8 +1,8 @@
 --!strict
 
-local Meta = require('@develfish-repo.utils/lib/Meta')
-local Project = require('@develfish-repo.project/lib/Project')
-local Wrapper = require('@develfish-repo.project/lib/Wrapper')
+local Meta = require('@lorry.utils/lib/Meta')
+local Project = require('@lorry.project/lib/Project')
+local Wrapper = require('@lorry.project/lib/Wrapper')
 local Manifest = require('../Manifest/Manifest')
 local Entry = require('./Entry')
 

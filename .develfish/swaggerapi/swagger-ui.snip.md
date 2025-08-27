@@ -22,11 +22,11 @@ keywords: [swagger-ui, swagger, container]
 > These imports should be added to the beginning of your script.
 
 ```lua
-local Lorry = require('@develfish-repo.utils/lib/Lorry')
+local Lorry = require('@lorry.utils/lib/Lorry')
 ```
 
 ```lua
-local SwaggerUi = require('@develfish-repo.project-compose/lib/SwaggerUi/SwaggerUi')
+local SwaggerUi = require('@lorry.project-compose/lib/SwaggerUi/SwaggerUi')
 ```
 
 ## Content
@@ -34,7 +34,7 @@ local SwaggerUi = require('@develfish-repo.project-compose/lib/SwaggerUi/Swagger
 > This snippet may be suggested to the user.
 
 ```lua
-Lorry:generate "@develfish-repo.project-compose/containers/swaggerapi/swagger-ui" {
+Lorry:generate "@lorry.project-compose/containers/swaggerapi/swagger-ui" {
   target = '@',
   variables = SwaggerUi
     :from(project, "env-swagger-ui")

@@ -23,11 +23,11 @@ keywords: [compose]
 > These imports should be added to the beginning of your script.
 
 ```lua
-local Lorry = require('@develfish-repo.utils/lib/Lorry')
+local Lorry = require('@lorry.utils/lib/Lorry')
 ```
 
 ```lua
-local Compose = require('@develfish-repo.project-compose/lib/Compose/Compose')
+local Compose = require('@lorry.project-compose/lib/Compose/Compose')
 ```
 
 ## Content
@@ -35,7 +35,7 @@ local Compose = require('@develfish-repo.project-compose/lib/Compose/Compose')
 > This snippet may be suggested to the user.
 
 ```lua
-Lorry:generate "@develfish-repo.project-compose/compose" {
+Lorry:generate "@lorry.project-compose/compose" {
   target = '@',
   variables = Compose
     :from(${1:project})

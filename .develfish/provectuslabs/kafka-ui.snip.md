@@ -22,11 +22,11 @@ keywords: [kafka-ui, container]
 > These imports should be added to the beginning of your script.
 
 ```lua
-local Lorry = require('@develfish-repo.utils/lib/Lorry')
+local Lorry = require('@lorry.utils/lib/Lorry')
 ```
 
 ```lua
-local KafkaUi = require('@develfish-repo.project-compose/lib/KafkaUi/KafkaUi')
+local KafkaUi = require('@lorry.project-compose/lib/KafkaUi/KafkaUi')
 ```
 
 ## Content
@@ -34,7 +34,7 @@ local KafkaUi = require('@develfish-repo.project-compose/lib/KafkaUi/KafkaUi')
 > This snippet may be suggested to the user.
 
 ```lua
-Lorry:generate "@develfish-repo.project-compose/containers/provectuslabs/kafka-ui" {
+Lorry:generate "@lorry.project-compose/containers/provectuslabs/kafka-ui" {
   target = '@',
   variables = KafkaUi
     :from(${1:project}, "${2:service}")

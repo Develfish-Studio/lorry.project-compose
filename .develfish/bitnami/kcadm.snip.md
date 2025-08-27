@@ -23,11 +23,11 @@ keywords: [kcadm, keycloak, admin, container]
 > These imports should be added to the beginning of your script.
 
 ```lua
-local Lorry = require('@develfish-repo.utils/lib/Lorry')
+local Lorry = require('@lorry.utils/lib/Lorry')
 ```
 
 ```lua
-local Kcadm = require('@develfish-repo.project-compose/lib/Kcadm/Kcadm')
+local Kcadm = require('@lorry.project-compose/lib/Kcadm/Kcadm')
 ```
 
 ## Content
@@ -35,7 +35,7 @@ local Kcadm = require('@develfish-repo.project-compose/lib/Kcadm/Kcadm')
 > This snippet may be suggested to the user.
 
 ```lua
-Lorry:generate "@develfish-repo.project-compose/containers/bitnami/kcadm" {
+Lorry:generate "@lorry.project-compose/containers/bitnami/kcadm" {
   target = '@',
   variables = Kcadm
     :from(${1:project}, "${2:service}", "${3:realm}")

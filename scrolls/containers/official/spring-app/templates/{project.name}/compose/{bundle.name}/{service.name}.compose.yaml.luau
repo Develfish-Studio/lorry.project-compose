@@ -1,7 +1,7 @@
 --!strict
 
-local Meta = require('@develfish-repo.utils/lib/Meta')
-local Lorry = require('@develfish-repo.utils/lib/Lorry')
+local Meta = require('@lorry.utils/lib/Meta')
+local Lorry = require('@lorry.utils/lib/Lorry')
 local SpringApp = require('@root/lib/SpringApp/SpringApp')
 local MinioBucket = require('@root/lib/SpringApp/MinioBucket')
 

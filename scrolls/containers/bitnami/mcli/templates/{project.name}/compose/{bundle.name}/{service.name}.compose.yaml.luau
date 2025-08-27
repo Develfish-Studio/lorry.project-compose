@@ -1,10 +1,10 @@
 --!strict
 
-local Meta = require('@develfish-repo.utils/lib/Meta')
-local Lorry = require('@develfish-repo.utils/lib/Lorry')
+local Meta = require('@lorry.utils/lib/Meta')
+local Lorry = require('@lorry.utils/lib/Lorry')
 local Mcli = require('@root/lib/Mcli/Mcli')
 local Remote = require('@root/lib/Mcli/Remote')
-local PropTypes = require('@develfish-repo.project/lib/PropTypes')
+local PropTypes = require('@lorry.project/lib/PropTypes')
 
 local variables: Mcli.Unwrapped & PropTypes.WithBundle = Lorry:variables()
 local service = variables.service

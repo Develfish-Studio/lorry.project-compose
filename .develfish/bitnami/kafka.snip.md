@@ -22,11 +22,11 @@ keywords: [kafka, container]
 > These imports should be added to the beginning of your script.
 
 ```lua
-local Lorry = require('@develfish-repo.utils/lib/Lorry')
+local Lorry = require('@lorry.utils/lib/Lorry')
 ```
 
 ```lua
-local Kafka = require('@develfish-repo.project-compose/lib/Kafka/Kafka')
+local Kafka = require('@lorry.project-compose/lib/Kafka/Kafka')
 ```
 
 ## Content
@@ -34,7 +34,7 @@ local Kafka = require('@develfish-repo.project-compose/lib/Kafka/Kafka')
 > This snippet may be suggested to the user.
 
 ```lua
-Lorry:generate "@develfish-repo.project-compose/containers/bitnami/kafka" {
+Lorry:generate "@lorry.project-compose/containers/bitnami/kafka" {
   target = '@',
   variables = Kafka
     :from(${1:project}, "${2:service}")

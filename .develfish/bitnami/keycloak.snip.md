@@ -23,11 +23,11 @@ keywords: [keycloak, openid, container]
 > These imports should be added to the beginning of your script.
 
 ```lua
-local Lorry = require('@develfish-repo.utils/lib/Lorry')
+local Lorry = require('@lorry.utils/lib/Lorry')
 ```
 
 ```lua
-local Keycloak = require('@develfish-repo.project-compose/lib/Keycloak/Keycloak')
+local Keycloak = require('@lorry.project-compose/lib/Keycloak/Keycloak')
 ```
 
 ## Content
@@ -35,7 +35,7 @@ local Keycloak = require('@develfish-repo.project-compose/lib/Keycloak/Keycloak'
 > This snippet may be suggested to the user.
 
 ```lua
-Lorry:generate "@develfish-repo.project-compose/containers/bitnami/keycloak" {
+Lorry:generate "@lorry.project-compose/containers/bitnami/keycloak" {
   target = '@',
   variables = Keycloak
     :from(${1:project}, "${2:service}")

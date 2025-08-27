@@ -1,4 +1,4 @@
-name: develfish-repo.project-compose
+name: lorry.project-compose
 actions:
   test:
     path: actions/test
@@ -39,9 +39,9 @@ scrolls:
   containers/swaggerapi/swagger-ui:
     path: scrolls/containers/swaggerapi/swagger-ui
 dependencies:
-  develfish-repo.utils:
-    uri: git@github.com:Develfish-Studio/develfish-repo.utils.git
-  develfish-repo.testing:
-    uri: git@github.com:Develfish-Studio/develfish-repo.testing.git
-  develfish-repo.project:
-    uri: git@github.com:Develfish-Studio/develfish-repo.project.git
+  lorry.utils:
+    uri: git@github.com:Develfish-Studio/lorry.utils.git
+  lorry.testing:
+    uri: git@github.com:Develfish-Studio/lorry.testing.git
+  lorry.project:
+    uri: git@github.com:Develfish-Studio/lorry.project.git

@@ -22,11 +22,11 @@ keywords: [haproxy, proxy, container]
 > These imports should be added to the beginning of your script.
 
 ```lua
-local Lorry = require('@develfish-repo.utils/lib/Lorry')
+local Lorry = require('@lorry.utils/lib/Lorry')
 ```
 
 ```lua
-local Haproxy = require('@develfish-repo.project-compose/lib/Haproxy/Haproxy')
+local Haproxy = require('@lorry.project-compose/lib/Haproxy/Haproxy')
 ```
 
 ## Content
@@ -34,7 +34,7 @@ local Haproxy = require('@develfish-repo.project-compose/lib/Haproxy/Haproxy')
 > This snippet may be suggested to the user.
 
 ```lua
-Lorry:generate "@develfish-repo.project-compose/containers/official/haproxy" {
+Lorry:generate "@lorry.project-compose/containers/official/haproxy" {
   target = '@',
   variables = Haproxy
     :from(${1:project}, "${2:service}")

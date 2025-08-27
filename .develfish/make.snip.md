@@ -21,11 +21,11 @@ keywords: [make, makefile]
 > These imports should be added to the beginning of your script.
 
 ```lua
-local Lorry = require('@develfish-repo.utils/lib/Lorry')
+local Lorry = require('@lorry.utils/lib/Lorry')
 ```
 
 ```lua
-local Make = require('@develfish-repo.project-compose/lib/Make/Make')
+local Make = require('@lorry.project-compose/lib/Make/Make')
 ```
 
 ## Content
@@ -33,7 +33,7 @@ local Make = require('@develfish-repo.project-compose/lib/Make/Make')
 > This snippet may be suggested to the user.
 
 ```lua
-Lorry:generate "@develfish-repo.project-compose/make" {
+Lorry:generate "@lorry.project-compose/make" {
   target = '@',
   variables = Make
     :from(${1:project})

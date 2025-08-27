@@ -1,9 +1,9 @@
 --!strict
 
-local Meta = require('@develfish-repo.utils/lib/Meta')
-local Project = require('@develfish-repo.project/lib/Project')
-local URI = require('@develfish-repo.utils/lib/URI')
-local Path = require('@develfish-repo.utils/lib/Path')
+local Meta = require('@lorry.utils/lib/Meta')
+local Project = require('@lorry.project/lib/Project')
+local URI = require('@lorry.utils/lib/URI')
+local Path = require('@lorry.utils/lib/Path')
 local Manifest = require('./Manifest/Manifest')
 
 local Keycloak = {}

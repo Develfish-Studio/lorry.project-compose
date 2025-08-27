@@ -1,8 +1,8 @@
 --!strict
 
-local describe = require("@develfish-repo.testing/lib/describe")
-local Meta = require("@develfish-repo.utils/lib/Meta")
-local Project = require("@develfish-repo.project/lib/Project")
+local describe = require("@lorry.testing/lib/describe")
+local Meta = require("@lorry.utils/lib/Meta")
+local Project = require("@lorry.project/lib/Project")
 local Haproxy = require("@root/lib/Haproxy/Haproxy")
 
 describe("Haproxy Record") (

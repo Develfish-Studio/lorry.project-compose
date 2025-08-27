@@ -1,7 +1,7 @@
 --!strict
 
-local Meta = require('@develfish-repo.utils/lib/Meta')
-local URI = require('@develfish-repo.utils/lib/URI')
+local Meta = require('@lorry.utils/lib/Meta')
+local URI = require('@lorry.utils/lib/URI')
 local Proxy = require('./Proxy')
 
 local Route = {}

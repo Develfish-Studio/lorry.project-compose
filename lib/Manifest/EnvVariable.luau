@@ -1,4 +1,4 @@
-local Meta = require('@develfish-repo.utils/lib/Meta')
+local Meta = require('@lorry.utils/lib/Meta')
 
 export type EnvVariable = {
   name: string,

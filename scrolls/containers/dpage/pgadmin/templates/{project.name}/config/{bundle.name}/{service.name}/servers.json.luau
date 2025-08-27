@@ -1,5 +1,5 @@
-local Meta = require('@develfish-repo.utils/lib/Meta')
-local Lorry = require('@develfish-repo.utils/lib/Lorry')
+local Meta = require('@lorry.utils/lib/Meta')
+local Lorry = require('@lorry.utils/lib/Lorry')
 local Pgadmin = require('@root/lib/Pgadmin/Pgadmin')
 
 local variables: Pgadmin.Unwrapped = Lorry:variables()

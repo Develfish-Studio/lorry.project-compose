@@ -1,8 +1,8 @@
 --!strict
 
-local Meta = require('@develfish-repo.utils/lib/Meta')
-local Wrapper = require('@develfish-repo.project/lib/Wrapper')
-local Project = require('@develfish-repo.project/lib/Project')
+local Meta = require('@lorry.utils/lib/Meta')
+local Wrapper = require('@lorry.project/lib/Wrapper')
+local Project = require('@lorry.project/lib/Project')
 local Include = require('./Include')
 local Network = require('./Network')
 local Volume = require('./Volume')

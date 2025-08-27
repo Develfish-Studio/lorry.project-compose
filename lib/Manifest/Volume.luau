@@ -1,6 +1,6 @@
 --!strict
 
-local Meta = require('@develfish-repo.utils/lib/Meta')
+local Meta = require('@lorry.utils/lib/Meta')
 local ComposeVolume = require('../Compose/Volume')
 
 local Volume = {}

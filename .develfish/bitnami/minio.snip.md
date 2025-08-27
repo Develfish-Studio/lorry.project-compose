@@ -22,11 +22,11 @@ keywords: [minio, container]
 > These imports should be added to the beginning of your script.
 
 ```lua
-local Lorry = require('@develfish-repo.utils/lib/Lorry')
+local Lorry = require('@lorry.utils/lib/Lorry')
 ```
 
 ```lua
-local Minio = require('@develfish-repo.project-compose/lib/Minio/Minio')
+local Minio = require('@lorry.project-compose/lib/Minio/Minio')
 ```
 
 ## Content
@@ -34,7 +34,7 @@ local Minio = require('@develfish-repo.project-compose/lib/Minio/Minio')
 > This snippet may be suggested to the user.
 
 ```lua
-Lorry:generate "@develfish-repo.project-compose/containers/bitnami/minio" {
+Lorry:generate "@lorry.project-compose/containers/bitnami/minio" {
   target = '@',
   variables = Minio
     :from(${1:project}, "${2:service}")

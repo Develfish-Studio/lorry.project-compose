@@ -1,8 +1,8 @@
 --!strict
 
-local Meta = require('@develfish-repo.utils/lib/Meta')
-local Wrapper = require('@develfish-repo.project/lib/Wrapper')
-local Path = require('@develfish-repo.utils/lib/Path')
+local Meta = require('@lorry.utils/lib/Meta')
+local Wrapper = require('@lorry.project/lib/Wrapper')
+local Path = require('@lorry.utils/lib/Path')
 local Server = require('./Server')
 
 local Proxy = {}
