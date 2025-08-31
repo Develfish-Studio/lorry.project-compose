@@ -1,3 +1,5 @@
+--!strict
+
 local Meta = require('@lorry.utils/lib/Meta')
 local Lorry = require('@lorry.utils/lib/Lorry')
 local Postgres = require('@root/lib/Postgres/Postgres')

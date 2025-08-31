@@ -1,3 +1,5 @@
+--!strict
+
 local Meta = require('@lorry.utils/lib/Meta')
 local Lorry = require('@lorry.utils/lib/Lorry')
 local Kafka = require('@root/lib/Kafka')
