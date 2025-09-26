@@ -5,7 +5,7 @@ local Meta = require("@lorry.utils/lib/Meta")
 local Project = require("@lorry.project/lib/Project")
 local Haproxy = require("@root/lib/Haproxy/Haproxy")
 
-describe("Haproxy Record") (
+return describe("Haproxy Record") (
   function (it)
     it("should provide ability to construct Haproxy record") (
       function (check)
@@ -30,5 +30,3 @@ describe("Haproxy Record") (
     )
   end
 )
-
-return {}

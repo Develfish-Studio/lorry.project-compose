@@ -5,7 +5,7 @@ local Meta = require("@lorry.utils/lib/Meta")
 local Project = require("@lorry.project/lib/Project")
 local Postgres = require("@root/lib/Postgres")
 
-describe("Postgres Record") (
+return describe("Postgres Record") (
   function (it)
     it("should provide ability to construct Postgres record") (
       function (check)
@@ -30,5 +30,3 @@ describe("Postgres Record") (
     )
   end
 )
-
-return {}

@@ -5,7 +5,7 @@ local Meta = require("@lorry.utils/lib/Meta")
 local Project = require("@lorry.project/lib/Project")
 local Pgadmin = require("@root/lib/Pgadmin/Pgadmin")
 
-describe("Pgadmin Record") (
+return describe("Pgadmin Record") (
   function (it)
     it("should provide ability to construct Pgadmin record") (
       function (check)
@@ -35,5 +35,3 @@ describe("Pgadmin Record") (
     )
   end
 )
-
-return {}
