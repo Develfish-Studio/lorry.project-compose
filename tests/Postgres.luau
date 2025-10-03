@@ -3,7 +3,7 @@
 local describe = require("@lorry.testing/lib/describe")
 local Meta = require("@lorry.utils/lib/Meta")
 local Project = require("@lorry.project/lib/Project")
-local Postgres = require("@root/lib/Postgres")
+local Postgres = require("@root/lib/Postgres/Postgres")
 
 return describe("Postgres Record") (
   function (it)
